@@ -6,9 +6,36 @@ import urllib.request
 from typing import Dict, Any, List, Optional
 from backend.rag_pipeline import rag_pipeline
 
-# Read Gemini key strictly from environment variable
 DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
+
+# Comprehensive regex patterns for high-intent complex escalations
+COMPLEX_PATTERNS = [
+    re.compile(r'(loan|emi|financ|sbi|hdfc|bank)\b.*(approv|sanction|interest|amount|collateral|moratorium|lakh|crore)', re.I),
+    re.compile(r'(approv|sanction|collateral)\b.*(loan|emi)', re.I),
+    re.compile(r'(medical|doctor|vision|eyesight|color blind|lasik)\b.*(fail|reject|appeal|board|iam|afcme|pmr|fit)', re.I),
+    re.compile(r'(fail|reject|appeal)\b.*(medical|class 1|class 2)', re.I),
+    re.compile(r'cadet\b.*(interview|prep|indigo|air india|spicejet|adapt|compass|selection|assessment)', re.I),
+    re.compile(r'(indigo|air india|spicejet)\b.*cadet', re.I),
+    re.compile(r'(talk|speak|call|connect)\b.*(human|counselor|advisor|agent|person|instructor|desk|phone|whatsapp)', re.I),
+    re.compile(r'(call|phone|whatsapp)\s*(me|now|back)', re.I),
+    re.compile(r'(discount|concession|scholarship|negotiat|waiver|fee reduction)', re.I),
+    re.compile(r'(foreign|faa|caa|sacaa|easa|conversion|convert)\b.*(license|cpl|dgca)', re.I)
+]
+
+# Core aviation terminology to guard against random false-positive RAG retrieval
+AVIATION_TERMS = {
+    "cpl", "ppl", "atpl", "dgca", "pilot", "plane", "aircraft", "flying", "flight",
+    "nav", "navigation", "altimeter", "stall", "weather", "met", "meteorology",
+    "qnh", "qfe", "engine", "airspace", "course", "fee", "fees", "medical", "class 1",
+    "class 2", "rtr", "license", "cadet", "ground school", "speed", "knot", "runway",
+    "atc", "cessna", "multi-engine", "instrument", "vor", "dme", "ils", "radar",
+    "squawk", "fdtl", "cross country", "solo", "computer number", "egca", "pariksha",
+    "aerodynamics", "lift", "drag", "thrust", "airframe", "hydraulics", "propeller",
+    "monsoon", "turbulence", "icing", "cloud", "cumulonimbus", "metar", "taf",
+    "cost", "price", "installment", "salary", "hours", "admission", "eligibility",
+    "physics", "maths", "nios", "arts", "commerce", "12th", "spectacles", "glasses"
+}
 
 class AviationAIEngine:
     def __init__(self, kb_path: str = "backend/knowledge_base.json"):
@@ -22,32 +49,47 @@ class AviationAIEngine:
 
     def is_complex_query(self, message: str) -> tuple[bool, str]:
         """
-        Detects if query requires escalation to human counselor / WhatsApp / Phone.
+        Detects if query requires escalation to human counselor / WhatsApp / Phone using flexible regex.
         Returns (is_complex, reason)
         """
-        text = message.lower()
-        
-        # Explicit request for human
-        if any(w in text for w in ["talk to human", "speak to human", "human agent", "counselor", "call me", "phone number", "contact person", "whatsapp me", "talk to someone", "callback"]):
-            return True, "Direct request to connect with Senior Flight Advisor"
-
-        # Financial / Loan approvals / discounts
-        if any(w in text for w in ["loan approval", "sanction letter", "collateral", "discount", "fee concession", "scholarship", "custom installment", "negotiate"]):
-            return True, "Personalized Education Loan & Fee Assistance Required"
-
-        # Medical issues / appeals / rejections
-        if any(w in text for w in ["failed medical", "medical rejection", "appeal", "dgca appeal", "color blind", "lasik rejected", "pmr issue", "asthma", "heart"]):
-            return True, "DGCA Medical Fitness & Medical Appeal Counseling Required"
-
-        # Cadet program selection / interview prep
-        if any(w in text for w in ["cadet interview", "airline exam dates", "compass test", "adapt assessment", "cadet letter of intent"]):
-            return True, "Airline Cadet Pilot Selection & Assessment Consultation"
-
-        # Complex non-science or degree conversion queries
-        if any(w in text for w in ["foreign license conversion", "faa to dgca", "caa to dgca", "sacaa to dgca", "dropped out", "failed 12th"]):
-            return True, "License Conversion & Eligibility Evaluation Required"
+        for pattern in COMPLEX_PATTERNS:
+            if pattern.search(message):
+                # Classify reason
+                text = message.lower()
+                if any(w in text for w in ["loan", "emi", "bank", "sbi", "hdfc", "financ"]):
+                    return True, "Personalized Education Loan & Fee Assistance Required"
+                elif any(w in text for w in ["medical", "appeal", "reject", "color", "vision", "specs", "lasik"]):
+                    return True, "DGCA Medical Fitness & Medical Appeal Counseling Required"
+                elif any(w in text for w in ["cadet", "adapt", "compass", "indigo", "interview"]):
+                    return True, "Airline Cadet Pilot Selection & Assessment Consultation"
+                elif any(w in text for w in ["discount", "concession", "scholarship", "waiver"]):
+                    return True, "Scholarship & Fee Concession Desk"
+                elif any(w in text for w in ["foreign", "conversion", "faa"]):
+                    return True, "License Conversion & Eligibility Evaluation Required"
+                else:
+                    return True, "Direct request to connect with Senior Flight Advisor"
 
         return False, ""
+
+    def is_adversarial_or_jailbreak(self, message: str) -> bool:
+        """Detect prompt injection and system jailbreak attempts"""
+        lower = message.lower()
+        jailbreak_triggers = [
+            "ignore all previous", "ignore previous instructions", "forget your instructions",
+            "you are no longer", "system prompt", "print your prompt", "leak your prompt",
+            "act as a", "pretend you are", "jailbreak", "DAN mode", "bypass"
+        ]
+        return any(t in lower for t in jailbreak_triggers)
+
+    def is_aviation_query(self, message: str) -> bool:
+        """Determines if query belongs to the aviation domain"""
+        tokens = set(re.findall(r'\b[a-z0-9\-]+\b', message.lower()))
+        if tokens & AVIATION_TERMS:
+            return True
+        # Check partial stems for Hindi/Hinglish (e.g. pilot, udaan, jahaj, hawai)
+        if any(w in message.lower() for w in ["pilot", "jahaj", "plane", "udaan", "cpl", "fees", "flight"]):
+            return True
+        return False
 
     def generate_escalation_data(self, query: str, reason: str) -> Dict[str, Any]:
         academy = self.kb.get("academy", {})
@@ -68,10 +110,9 @@ class AviationAIEngine:
         }
 
     def generate_with_gemini(self, question: str, context_chunks: List[Dict[str, Any]]) -> Optional[str]:
-        """
-        Calls Gemini Flash REST API with the retrieved DGCA textbook excerpts.
-        """
-        if not self.api_key:
+        """Calls Gemini Flash REST API with retrieved DGCA textbook excerpts"""
+        api_key = os.environ.get("GEMINI_API_KEY", self.api_key)
+        if not api_key:
             return None
 
         formatted_context = "\n\n".join([
@@ -83,31 +124,22 @@ class AviationAIEngine:
             "You are the Senior Flight Ground Instructor at Airborne Aviation Academy (DGCA Approved Pilot Training Institute). "
             "A student pilot has asked a question. Explain it thoroughly, accurately, and professionally based on the provided verified DGCA textbook excerpts. "
             "Always cite the textbook title and page numbers in bold (e.g. **Oxford Aviation Academy: Meteorology, Page 135**). "
-            "Use clear markdown headings, bullet points, and formulas where applicable."
+            "Use clear markdown headings, bullet points, and formulas where applicable. "
+            "If the question is in Hindi or Hinglish, answer in polite, clear Hinglish."
         )
 
         user_prompt = f"{system_instruction}\n\nStudent Question: {question}\n\nVerified DGCA Textbook Excerpts:\n{formatted_context}"
 
         payload = {
-            "contents": [
-                {
-                    "parts": [{"text": user_prompt}]
-                }
-            ],
-            "generationConfig": {
-                "temperature": 0.2,
-                "maxOutputTokens": 1000
-            }
+            "contents": [{"parts": [{"text": user_prompt}]}],
+            "generationConfig": {"temperature": 0.2, "maxOutputTokens": 1000}
         }
 
         try:
             req = urllib.request.Request(
                 GEMINI_API_URL,
                 data=json.dumps(payload).encode("utf-8"),
-                headers={
-                    "Content-Type": "application/json",
-                    "X-goog-api-key": self.api_key
-                }
+                headers={"Content-Type": "application/json", "X-goog-api-key": api_key}
             )
             with urllib.request.urlopen(req, timeout=12.0) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
@@ -122,11 +154,8 @@ class AviationAIEngine:
         return None
 
     def answer_query(self, message: str) -> Dict[str, Any]:
-        """
-        Processes query against knowledge base and 13 DGCA Books RAG database.
-        Uses Gemini Flash if configured, with instant fallback to verified local RAG engine.
-        """
-        text = message.strip().lower()
+        """Processes student query with scope guardrails, RAG, and escalation"""
+        text = message.strip()
         is_complex, complex_reason = self.is_complex_query(text)
         escalation = self.generate_escalation_data(message, complex_reason) if is_complex else {
             "needed": False,
@@ -135,8 +164,21 @@ class AviationAIEngine:
             "phone_helpline": self.kb["academy"]["phone_helpline"]
         }
 
-        # 1. Greetings
-        if any(w in text for w in ["hello", "hi", "hey", "good morning", "good evening", "namaste", "start"]):
+        # 1. Adversarial & Jailbreak Defense
+        if self.is_adversarial_or_jailbreak(text):
+            return {
+                "answer": (
+                    "### 🛡️ **Airborne Flight Training Assistant**\n\n"
+                    "I am the dedicated 24/7 AI Flight Training Advisor for **Airborne Aviation Academy**. "
+                    "My operating guidelines restrict me exclusively to DGCA flight training, ground school subjects, CPL/ATPL course fees, and pilot career counseling. "
+                    "How can I assist your aviation and flight training journey today?"
+                ),
+                "chips": ["DGCA CPL Syllabus", "Course Fee Breakdown", "Class 1 & 2 Medicals", "Bank Loan Assistance"],
+                "escalation": escalation
+            }
+
+        # 2. Greetings
+        if any(w in text.lower() for w in ["hello", "hi", "hey", "good morning", "good evening", "namaste", "start"]):
             response_text = (
                 f"### Welcome to **{self.kb['academy']['name']}**! ✈️\n\n"
                 "I am your **24/7 AI Aviation Flight Advisor & Ground School Tutor**, powered by **Gemini Flash & 13 DGCA Pilot Training Textbooks (9,200+ knowledge chunks)**. "
@@ -154,14 +196,10 @@ class AviationAIEngine:
                 "Class 1 & 2 Medical Process",
                 "Aerodynamic Stall & Lift"
             ]
-            return {
-                "answer": response_text,
-                "chips": chips,
-                "escalation": escalation
-            }
+            return {"answer": response_text, "chips": chips, "escalation": escalation}
 
-        # 2. Fee & Loan queries
-        if any(w in text for w in ["fee", "fees", "cost", "price", "budget", "expensive", "charges", "installment", "sbi", "hdfc"]):
+        # 3. Fee & Loan queries
+        if any(w in text.lower() for w in ["fee", "fees", "cost", "price", "budget", "expensive", "charges", "installment", "sbi", "hdfc"]):
             budget = self.kb["fees_and_loans"]["budget_summary"]
             loans = self.kb["fees_and_loans"]["bank_loans"]
             response_text = (
@@ -184,45 +222,30 @@ class AviationAIEngine:
             chips = ["CPL Installment Schedule", "Bank Loan Assistance", "Cadet Pilot Costs", "Talk to Finance Counselor"]
             escalation["needed"] = True
             escalation["reason"] = "Personalized Loan & Installment Consultation Available"
+            return {"answer": response_text, "chips": chips, "escalation": escalation}
+
+        # 4. Out-of-Domain Guardrail: Rejection of non-aviation requests (recipes, coding hacks, stocks)
+        if not self.is_aviation_query(text) and not is_complex:
             return {
-                "answer": response_text,
-                "chips": chips,
+                "answer": (
+                    "### ✈️ **Airborne Aviation Academy Assistant**\n\n"
+                    "I specialize strictly in **DGCA Pilot Training & Aviation Ground School** (Air Navigation, Aviation Meteorology, Air Regulations, Technical General, and RTR-A).\n\n"
+                    "I cannot assist with unrelated queries like general programming, cooking recipes, or stock market trading.\n\n"
+                    "Please feel free to ask any question regarding:\n"
+                    "- 🛫 **CPL & Airline Cadet Pilot Programs**\n"
+                    "- 📚 **DGCA Ground Exam Subjects & Theory Doubts**\n"
+                    "- 💰 **Flight Training Fees & Bank Loan Tie-ups**\n"
+                    "- 🩺 **Class 1 & Class 2 Medicals and Vision Rules**"
+                ),
+                "chips": ["CPL Course Details", "DGCA 5 Subjects", "Total Course Cost", "Class 1 & 2 Medicals"],
                 "escalation": escalation
             }
 
-        # 3. Medicals (Class 1 & Class 2)
-        if any(w in text for w in ["medical", "medicals", "class 1", "class 2", "eyesight", "eye", "vision", "specs", "glasses", "lasik", "afcme", "iam"]):
-            c2 = self.kb["dgca_syllabus_and_rules"]["medicals"]["class_2"]
-            c1 = self.kb["dgca_syllabus_and_rules"]["medicals"]["class_1"]
-            response_text = (
-                "### 🩺 **DGCA Medical Examination Roadmap**\n\n"
-                "To fly as a commercial pilot in India, you must clear two medical stages:\n\n"
-                "#### 1️⃣ **DGCA Class 2 Medical (First Step)**\n"
-                f"- **Conducted By**: DGCA-Empanelled Class 2 Civil Doctors.\n"
-                f"- **Tests**: {c2['tests_included']}\n"
-                f"- **Validity**: {c2['validity']}\n"
-                "- **Cost**: Approx. ₹5,000 - ₹8,000 paid directly to the clinic/diagnostic labs.\n"
-                "- **Outcome**: Fit Certificate issued; doctor forwards file to DGCA Medical Cell to generate your **Permanent Medical Record (PMR) File Number**.\n\n"
-                "#### 2️⃣ **DGCA Class 1 Medical (Final CPL Requirement)**\n"
-                f"- **Conducted By**: Premier IAF Centres — {', '.join(c1['authorized_centers'][:2])} & authorized civil centers.\n"
-                f"- **Prerequisite**: Must have completed Class 2 with an active PMR number.\n"
-                f"- **Vision Standard**: {c1['vision_criteria']}\n\n"
-                "#### 👓 **Glasses & Lasik FAQ**:\n"
-                "- **Spectacles**: Yes, up to standard refractive limits is allowed provided corrected vision is **6/6**.\n"
-                "- **Lasik Surgery**: Allowed if completed after age 18 and minimum 6 months have elapsed with proven corneal stability."
-            )
-            chips = ["DGCA Empanelled Doctors List", "Apply for Computer Number", "PMR File Tracking", "Schedule Medical Guidance"]
-            return {
-                "answer": response_text,
-                "chips": chips,
-                "escalation": escalation
-            }
-
-        # 4. Search the RAG Database across all 13 DGCA Books
+        # 5. Search the RAG Database across all 13 DGCA Books
         rag_results = rag_pipeline.search(message, top_k=3)
 
         if rag_results:
-            # 4A. Try Gemini synthesis
+            # Try Gemini synthesis
             gemini_ans = self.generate_with_gemini(message, rag_results)
             if gemini_ans:
                 return {
@@ -231,11 +254,10 @@ class AviationAIEngine:
                     "escalation": escalation
                 }
 
-            # 4B. Local High-Fidelity RAG fallback if Gemini offline
+            # Local RAG fallback
             sources_md = []
             citations = []
-
-            for idx, r in enumerate(rag_results):
+            for r in rag_results:
                 source_tag = f"**{r['book_title']}** (Page {r['page_number']}) — *{r['subject']}*"
                 citations.append(source_tag)
                 clean_snippet = r['text'].strip()
@@ -252,25 +274,12 @@ class AviationAIEngine:
             if len(rag_results) > 1:
                 answer_body += f"#### 🔍 Additional Technical References:\n" + "\n\n".join(sources_md[1:]) + "\n\n"
 
-            answer_body += (
-                f"📚 **Referenced DGCA Textbooks:**\n"
-                + "\n".join([f"- {c}" for c in citations])
-            )
+            answer_body += f"📚 **Referenced DGCA Textbooks:**\n" + "\n".join([f"- {c}" for c in citations])
 
-            chips = [
-                "Explain Further",
-                "Related DGCA Question",
-                "Connect with Ground Instructor",
-                "CPL Course Details"
-            ]
+            chips = ["Explain Further", "Related DGCA Question", "Connect with Ground Instructor", "CPL Course Details"]
+            return {"answer": answer_body, "chips": chips, "escalation": escalation}
 
-            return {
-                "answer": answer_body,
-                "chips": chips,
-                "escalation": escalation
-            }
-
-        # 5. Default fallback to general aviation knowledge base
+        # 6. Default fallback for general aviation queries
         escalation["needed"] = True
         escalation["reason"] = "Aviation advisor ready to answer your specific flight question"
         response_text = (
@@ -283,17 +292,7 @@ class AviationAIEngine:
             "- 👨‍✈️ **Airline Recruitment & Cadet Pilot Programs**\n\n"
             "To get immediate personalized guidance, connect directly with our Senior Flight Advisor below via WhatsApp or call our 24/7 toll-free helpline."
         )
-        chips = [
-            "CPL Course Details",
-            "Fee Structure & Loans",
-            "DGCA Syllabus",
-            "Class 1 & 2 Medicals",
-            "Chat on WhatsApp"
-        ]
-        return {
-            "answer": response_text,
-            "chips": chips,
-            "escalation": escalation
-        }
+        chips = ["CPL Course Details", "Fee Structure & Loans", "DGCA Syllabus", "Class 1 & 2 Medicals", "Chat on WhatsApp"]
+        return {"answer": response_text, "chips": chips, "escalation": escalation}
 
 ai_engine = AviationAIEngine()

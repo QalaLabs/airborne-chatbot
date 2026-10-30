@@ -293,14 +293,22 @@ class AviationRAGPipeline:
     def search(self, query: str, top_k: int = 5, subject_filter: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Executes hybrid BM25 full-text search against the DGCA aviation textbooks.
+        Requires meaningful aviation query terms.
         """
-        # Clean query for FTS5 syntax
-        cleaned_words = [w for w in re.sub(r'[^a-zA-Z0-9\s]', '', query).split() if len(w) > 2]
+        # Stopwords to exclude from FTS match query to avoid false positives
+        STOPWORDS = {
+            "what", "is", "the", "and", "or", "to", "for", "in", "on", "a", "an", "of", "how",
+            "does", "do", "can", "tell", "me", "about", "give", "please", "with", "from",
+            "this", "that", "it", "are", "be", "have", "has", "i", "you", "we", "they"
+        }
+        
+        words = re.sub(r'[^a-zA-Z0-9\s]', '', query).split()
+        cleaned_words = [w for w in words if len(w) > 2 and w.lower() not in STOPWORDS]
         if not cleaned_words:
             return []
 
-        # Build FTS match expression with OR / NEAR
-        match_query = " OR ".join([f'"{w}"*' for w in cleaned_words[:8]])
+        # Build FTS match expression: require matching high-value terms
+        match_query = " OR ".join([f'"{w}"*' for w in cleaned_words[:6]])
 
         sql = """
             SELECT 

@@ -62,7 +62,7 @@ class TestAirborneChatbot(unittest.TestCase):
         self.assertFalse(session["is_capped"])
 
         # Simulate 30 minutes of interaction (1800 seconds)
-        session_manager.sessions[student_id]["used_seconds"] = DAILY_CAP_SECONDS
+        session_manager.set_student_used_seconds(student_id, DAILY_CAP_SECONDS)
         capped_session = session_manager.get_session(student_id)
         self.assertEqual(capped_session["remaining_seconds"], 0)
         self.assertTrue(capped_session["is_capped"])
