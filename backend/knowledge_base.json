@@ -1,0 +1,217 @@
+{
+  "academy": {
+    "name": "Airborne Aviation Academy",
+    "tagline": "DGCA Approved Premier Pilot Training & Ground School",
+    "whatsapp_number": "+919876543210",
+    "whatsapp_display": "+91 98765 43210",
+    "phone_helpline": "+91 1800 247 2676",
+    "alternate_phone": "+91 98765 43210",
+    "email": "admissions@airborne-aviation.edu",
+    "locations": [
+      "New Delhi Flying Hub & Ground Center",
+      "Indore Ground & Simulator Academy",
+      "Partner Flight Bases: Dhana (MP), Gondia (MH) & Florida (USA)"
+    ]
+  },
+  "courses": [
+    {
+      "id": "cpl-integrated",
+      "title": "Commercial Pilot License (CPL) Integrated Course",
+      "duration": "14 to 18 Months",
+      "description": "Comprehensive DGCA-compliant CPL program covering 200 flying hours on Cessna 172 Glass Cockpit + complete Ground School, RTR(A) and Multi-Engine endorsement.",
+      "eligibility": "10+2 with Physics & Mathematics (minimum 50% aggregate recommended) or NIOS equivalent. Minimum 17 years of age.",
+      "total_fee_india": "₹42,50,000 - ₹46,00,000 (inclusive of 200 flying hours, fuel, instructor fees, and ground training)",
+      "total_fee_abroad": "₹38,00,000 (USA/South Africa 200 hrs) + ₹4,50,000 (DGCA conversion flying & exams in India)",
+      "aircraft_fleet": "Cessna 172R/S Garmin G1000, Piper Seneca V (Multi-Engine), Diamond DA42",
+      "installments": [
+        "1. Admission & Ground School Registration: ₹2,50,000",
+        "2. Pre-Solo & Base Clearance (before flying starts): ₹10,00,000",
+        "3. Milestone 1 (completion of 50 flying hours): ₹10,00,000",
+        "4. Milestone 2 (completion of 100 flying hours): ₹10,00,000",
+        "5. Final Multi-Engine & License Release (last 50 hrs): Remaining balance"
+      ],
+      "highlights": [
+        "DGCA approved syllabus with 100% pass guarantee coaching",
+        "200 mandatory flying hours logged seamlessly",
+        "Glass cockpit experience on Garmin G1000",
+        "In-house DGCA Class 2 medical and Computer Number assistance"
+      ]
+    },
+    {
+      "id": "ground-school",
+      "title": "DGCA CPL Ground School (All 5 Subjects + RTR)",
+      "duration": "4 to 6 Months",
+      "description": "Intensive ground training designed by senior airline captains and ex-IAF navigators to crack all DGCA theoretical examinations in first attempt.",
+      "eligibility": "Class 12th appeared or passed (Physics & Maths). Non-science students can join alongside NIOS prep.",
+      "total_fee_india": "₹1,85,000 + GST (covers all 5 DGCA subjects + RTR(A) preparation + question bank access)",
+      "subjects_covered": [
+        "Air Navigation",
+        "Aviation Meteorology",
+        "Air Regulations",
+        "Technical General (Engines, Airframes, Systems)",
+        "Technical Specific (Aircraft type rating exam)",
+        "Radio Telephony Restricted (RTR-A) Part 1 & 2"
+      ],
+      "installments": [
+        "Down payment at registration: ₹50,000",
+        "Second installment (Month 2): ₹75,000",
+        "Final installment (Month 3): ₹60,000"
+      ]
+    },
+    {
+      "id": "cadet-pilot",
+      "title": "Cadet Pilot Program Preparation & Mentorship",
+      "duration": "2 to 3 Months (Prep) + 18 Months (Airline Training)",
+      "description": "Structured pathway for airline cadet programs (IndiGo Cadet Pilot Program, Air India Cadet Pilot, SpiceJet Cadet). Includes ADAPT test prep, psychometric drills, group discussion, simulator prep, and interview coaching.",
+      "eligibility": "10+2 with 51% in English, Physics, and Maths. Age: 18 to 32 years.",
+      "cadet_program_cost": "Approx. ₹95 Lakhs - ₹1.15 Crores (paid directly to airline's flight training partner with Letter of Intent / job offer upon graduation)",
+      "our_prep_fee": "₹1,25,000 for full assessment readiness, COMPASS/ADAPT simulator training & captain interviews",
+      "highlights": [
+        "Conditional Letter of Employment as Junior First Officer before flying commences",
+        "Type-rating on Airbus A320 or Boeing 737 included in cadet program",
+        "Bank loan pre-approved from nationalized banks on Letter of Intent"
+      ]
+    },
+    {
+      "id": "rtr-aero",
+      "title": "RTR(A) - Radio Telephony Restricted (Aeronautical)",
+      "duration": "6 to 8 Weeks",
+      "description": "Dedicated prep course for the WPC (Ministry of Communications) exam necessary to operate aircraft communication radios in Indian airspace.",
+      "eligibility": "Must have DGCA Computer Number or applied.",
+      "total_fee_india": "₹35,000",
+      "exam_components": [
+        "Part 1: Transmission / Practical Radio Telephony simulation (Callsigns, distress, urgency, routine readbacks)",
+        "Part 2: Viva Voce on Regulations, Radio navigation aids, and aircraft communications"
+      ]
+    },
+    {
+      "id": "atpl-ground",
+      "title": "Airline Transport Pilot License (ATPL) Ground Prep",
+      "duration": "2 to 3 Months",
+      "description": "Advanced ground classes for commercial pilots looking to upgrade to Captains (ATPL).",
+      "eligibility": "Valid CPL with minimum required flying experience.",
+      "total_fee_india": "₹95,000",
+      "subjects_covered": ["Radio Aids & Flight Planning", "Advanced Air Navigation", "Aviation Meteorology"]
+    }
+  ],
+  "dgca_syllabus_and_rules": {
+    "computer_number": {
+      "definition": "A unique permanent identification number issued by the DGCA via the eGCA portal to track all your exam appearances and license records.",
+      "requirements": [
+        "10th Marksheet & Passing Certificate (for Date of Birth proof)",
+        "12th Marksheet & Verification letter from relevant Educational Board (CBSE/ICSE/State/NIOS)",
+        "Passport copy or Aadhaar card",
+        "Recent passport-sized photographs matching DGCA specs",
+        "Class 2 Medical Assessment or medical application number"
+      ],
+      "portal": "eGCA (https://egca.dgca.gov.in)",
+      "processing_time": "Typically 15 to 30 working days if documents are properly verified."
+    },
+    "dgca_exams": {
+      "frequency": "Quarterly / On-Demand through Pariksha portal",
+      "format": "Online Computer-Based Testing (CBT), Multiple Choice Questions (MCQs)",
+      "pass_percentage": "70% in each subject",
+      "negative_marking": "No negative marking in DGCA CPL exams",
+      "validity": "DGCA exam results are valid for 5 years to complete flight training and issue CPL."
+    },
+    "medicals": {
+      "class_2": {
+        "description": "Initial medical examination for aspiring pilots conducted by DGCA-empanelled civil Class 2 doctors.",
+        "tests_included": "Blood routine, Lipid profile, Urine RE/ME, Pure Tone Audiometry (hearing), ECG, Chest X-ray, Detailed Eye test (refraction, fundus, color vision).",
+        "validity": "2 years for pilots under 40 years of age.",
+        "outcome": "Fit certificate + CA-35 forwarded to DGCA Medical Cell for permanent PMR file creation."
+      },
+      "class_1": {
+        "description": "Advanced medical required for the final issue of a Commercial Pilot License.",
+        "authorized_centers": [
+          "IAM (Institute of Aerospace Medicine), IAF Bangalore",
+          "AFCME (Air Force Central Medical Establishment), Subroto Park, New Delhi",
+          "MEC (Medical Evaluation Centre), Jorhat / Mumbai Naval Hospital Asvini",
+          "Designated civil empanelled hospitals (e.g. Apollo, Nanavati, Fortis for re-examinations)"
+        ],
+        "prerequisite": "Valid DGCA Class 2 Medical Assessment file number.",
+        "vision_criteria": "6/6 corrected with glasses or contact lenses. Lasik surgery is permitted after age 18 if post-op stability criteria (>6 months) are fulfilled as per DGCA circular."
+      }
+    },
+    "flying_hour_breakdown": {
+      "total_required": 200,
+      "breakdown": [
+        "100 Hours: Pilot-in-Command (PIC / Solo)",
+        "50 Hours: Cross-Country flying (distance > 100 NM from departure airfield)",
+        "20 Hours: Instrument Flying (Simulated hood + Actual flight simulator)",
+        "5 Hours: Solo Night Flying (including minimum 10 takeoffs and landings at night)",
+        "Remaining: Dual instructional flight training and maneuvers"
+      ]
+    }
+  },
+  "fees_and_loans": {
+    "budget_summary": {
+      "ground_school": "₹1.85 Lakhs - ₹2.50 Lakhs",
+      "flying_training_200hrs": "₹38 Lakhs - ₹46 Lakhs",
+      "dgca_exam_and_medical_fees": "₹40,000 - ₹60,000",
+      "rtr_exam_fees": "₹10,000",
+      "uniform_books_navigation_logbook": "₹35,000",
+      "total_estimated_conventional_cpl": "₹42 Lakhs to ₹48 Lakhs"
+    },
+    "bank_loans": {
+      "collateral_free_limit": "Up to ₹7.5 Lakhs (under Govt. education loan schemes)",
+      "secured_loan_amount": "Up to ₹1.5 Crores against residential/commercial property or fixed deposits",
+      "partner_banks": [
+        "State Bank of India (SBI Global Ed-Vantage / Scholar Loan)",
+        "HDFC Credila (Specialized aviation loan with fast 7-day sanction)",
+        "Axis Bank Aviation Study Loan",
+        "Bank of Baroda Education Loan"
+      ],
+      "interest_rate_range": "8.75% to 11.25% p.a. floating",
+      "moratorium": "Course duration (18 months) + 6 to 12 months after course completion before EMI repayment starts."
+    }
+  },
+  "career_faqs": [
+    {
+      "question": "Can I become a pilot if I am from an Arts or Commerce background?",
+      "answer": "YES! If you did not take Physics and Mathematics in your 10+2, you can easily take those two subjects via NIOS (National Institute of Open Schooling) On-Demand Examinations. DGCA accepts NIOS marksheets unconditionally."
+    },
+    {
+      "question": "What is the starting salary of a Commercial Pilot in India?",
+      "answer": "A Junior First Officer (Second Officer) typically starts at ₹1.5 Lakhs to ₹2.5 Lakhs per month. Once promoted to First Officer (post 500-1000 hrs on type), it increases to ₹3.5L - ₹5L/month. A Captain flying narrow-body aircraft (A320/B737) earns between ₹6.5 Lakhs and ₹10.5 Lakhs per month."
+    },
+    {
+      "question": "Is wearing glasses permitted for DGCA CPL?",
+      "answer": "Yes, wearing corrective spectacles or contact lenses is completely permissible, provided your eyesight corrects to 6/6 distance vision and normal near vision. Color blindness is tested strictly using Ishihara plates."
+    },
+    {
+      "question": "What is the difference between Conventional CPL and Cadet Pilot Program?",
+      "answer": "Conventional CPL gives you an open pilot license where you apply to all airlines upon graduation. Total cost: ~₹42L-₹48L. Cadet Pilot Program provides a conditional letter of employment (job security) before you begin training, but costs between ₹95L to ₹1.15 Cr and bonds you with that specific airline."
+    },
+    {
+      "question": "What is the minimum age and upper age limit for pilot training?",
+      "answer": "Minimum age to be issued a Student Pilot License (SPL) is 16 years, and 17 years for CPL flying. The DGCA allows commercial flying privileges up to 65 years of age."
+    },
+    {
+      "question": "What is the current hiring demand in Indian airlines?",
+      "answer": "India is the fastest growing aviation market in the world. Air India, IndiGo, and Akasa have placed combined aircraft orders for over 1,500 new planes arriving between 2024 and 2032. This creates an estimated demand for 12,000+ new commercial pilots over the next decade."
+    }
+  ],
+  "escalation_triggers": [
+    "loan approval",
+    "education loan",
+    "bank loan",
+    "financial assistance",
+    "scholarship",
+    "discount",
+    "fee concession",
+    "failed medical",
+    "medical appeal",
+    "lasik rejection",
+    "color blindness",
+    "cadet pilot interview",
+    "adapt test",
+    "speak to counselor",
+    "talk to human",
+    "call me",
+    "visit academy",
+    "campus tour",
+    "book demo flight",
+    "urgent admission"
+  ]
+}
