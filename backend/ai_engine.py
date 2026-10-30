@@ -2,47 +2,23 @@ import json
 import os
 import re
 import urllib.parse
+import urllib.request
 from typing import Dict, Any, List, Optional
 from backend.rag_pipeline import rag_pipeline
 
-# Try importing google-generativeai for Gemini support
-try:
-    import google.generativeai as genai
-    HAS_GENAI = True
-except ImportError:
-    HAS_GENAI = False
+# Read Gemini key strictly from environment variable
+DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent"
 
 class AviationAIEngine:
     def __init__(self, kb_path: str = "backend/knowledge_base.json"):
         self.kb_path = kb_path
         self.kb = self._load_kb()
-        self.gemini_model = None
-        self._init_gemini()
+        self.api_key = os.environ.get("GEMINI_API_KEY", DEFAULT_GEMINI_KEY)
 
     def _load_kb(self) -> Dict[str, Any]:
         with open(self.kb_path, "r", encoding="utf-8") as f:
             return json.load(f)
-
-    def _init_gemini(self):
-        gemini_key = os.environ.get("GEMINI_API_KEY")
-        if HAS_GENAI and gemini_key:
-            try:
-                genai.configure(api_key=gemini_key)
-                self.gemini_model = genai.GenerativeModel(
-                    model_name="gemini-1.5-flash",
-                    system_instruction=(
-                        "You are the Senior Flight Ground Instructor and 24/7 Aviation AI Assistant for Airborne Aviation Academy (DGCA Approved). "
-                        "Answer student flight training and DGCA examination questions accurately, professionally, and clearly. "
-                        "When provided with verified textbook excerpts from DGCA syllabus books, base your explanations directly on that evidence and cite the textbook title and page numbers. "
-                        "Maintain a supportive, authoritative tone suitable for aspiring airline pilots."
-                    )
-                )
-                print("[AI Engine] Google Gemini 1.5 Flash initialized successfully.")
-            except Exception as e:
-                print(f"[AI Engine] Could not initialize Gemini: {e}")
-                self.gemini_model = None
-        else:
-            self.gemini_model = None
 
     def is_complex_query(self, message: str) -> tuple[bool, str]:
         """
@@ -91,10 +67,64 @@ class AviationAIEngine:
             "email": academy.get("email", "admissions@airborne-aviation.edu")
         }
 
+    def generate_with_gemini(self, question: str, context_chunks: List[Dict[str, Any]]) -> Optional[str]:
+        """
+        Calls Gemini Flash REST API with the retrieved DGCA textbook excerpts.
+        """
+        if not self.api_key:
+            return None
+
+        formatted_context = "\n\n".join([
+            f"--- [Textbook: {c['book_title']}, Page {c['page_number']}, Subject: {c['subject']}] ---\n{c['text']}"
+            for c in context_chunks
+        ])
+
+        system_instruction = (
+            "You are the Senior Flight Ground Instructor at Airborne Aviation Academy (DGCA Approved Pilot Training Institute). "
+            "A student pilot has asked a question. Explain it thoroughly, accurately, and professionally based on the provided verified DGCA textbook excerpts. "
+            "Always cite the textbook title and page numbers in bold (e.g. **Oxford Aviation Academy: Meteorology, Page 135**). "
+            "Use clear markdown headings, bullet points, and formulas where applicable."
+        )
+
+        user_prompt = f"{system_instruction}\n\nStudent Question: {question}\n\nVerified DGCA Textbook Excerpts:\n{formatted_context}"
+
+        payload = {
+            "contents": [
+                {
+                    "parts": [{"text": user_prompt}]
+                }
+            ],
+            "generationConfig": {
+                "temperature": 0.2,
+                "maxOutputTokens": 1000
+            }
+        }
+
+        try:
+            req = urllib.request.Request(
+                GEMINI_API_URL,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={
+                    "Content-Type": "application/json",
+                    "X-goog-api-key": self.api_key
+                }
+            )
+            with urllib.request.urlopen(req, timeout=12.0) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                candidates = data.get("candidates", [])
+                if candidates:
+                    parts = candidates[0].get("content", {}).get("parts", [])
+                    if parts:
+                        return parts[0].get("text", "")
+        except Exception as e:
+            print(f"[AI Engine] Gemini API error: {e}")
+
+        return None
+
     def answer_query(self, message: str) -> Dict[str, Any]:
         """
         Processes query against knowledge base and 13 DGCA Books RAG database.
-        Uses Gemini if configured, otherwise falls back to verified RAG engine.
+        Uses Gemini Flash if configured, with instant fallback to verified local RAG engine.
         """
         text = message.strip().lower()
         is_complex, complex_reason = self.is_complex_query(text)
@@ -109,7 +139,7 @@ class AviationAIEngine:
         if any(w in text for w in ["hello", "hi", "hey", "good morning", "good evening", "namaste", "start"]):
             response_text = (
                 f"### Welcome to **{self.kb['academy']['name']}**! ✈️\n\n"
-                "I am your **24/7 AI Aviation Flight Advisor & Ground School Tutor**, backed by **13 DGCA Pilot Training Textbooks (9,200+ knowledge chunks)**. "
+                "I am your **24/7 AI Aviation Flight Advisor & Ground School Tutor**, powered by **Gemini Flash & 13 DGCA Pilot Training Textbooks (9,200+ knowledge chunks)**. "
                 "I can resolve every doubt regarding:\n\n"
                 "- 📚 **DGCA Ground Subjects:** Air Navigation, Meteorology, Regulations, Technical General/Specific & RTR(A)\n"
                 "- 💰 **Fee Structures & 100% Bank Loan Tie-ups**\n"
@@ -192,25 +222,16 @@ class AviationAIEngine:
         rag_results = rag_pipeline.search(message, top_k=3)
 
         if rag_results:
-            # Check if Gemini LLM is enabled
-            if self.gemini_model:
-                try:
-                    context_chunks = "\n\n".join([
-                        f"[Source: {r['book_title']}, Page {r['page_number']}, Subject: {r['subject']}]\n{r['text']}"
-                        for r in rag_results
-                    ])
-                    llm_prompt = f"Student Question: {message}\n\nVerified DGCA Textbook Extracts:\n{context_chunks}\n\nProvide a comprehensive, clear, step-by-step flight instructor answer grounded in these extracts, citing the textbook and page number."
-                    gemini_response = self.gemini_model.generate_content(llm_prompt)
-                    if gemini_response and gemini_response.text:
-                        return {
-                            "answer": gemini_response.text,
-                            "chips": ["Explain Further", "Related DGCA Question", "Connect with Ground Instructor", "CPL Course Details"],
-                            "escalation": escalation
-                        }
-                except Exception as e:
-                    print(f"[AI Engine] Gemini generation fallback to local RAG: {e}")
+            # 4A. Try Gemini synthesis
+            gemini_ans = self.generate_with_gemini(message, rag_results)
+            if gemini_ans:
+                return {
+                    "answer": gemini_ans,
+                    "chips": ["Explain Further", "Related DGCA Question", "Connect with Ground Instructor", "CPL Course Details"],
+                    "escalation": escalation
+                }
 
-            # Local High-Fidelity RAG fallback
+            # 4B. Local High-Fidelity RAG fallback if Gemini offline
             sources_md = []
             citations = []
 
