@@ -6,8 +6,9 @@ import pymupdf
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
-DB_PATH = Path("data/aviation_rag.db")
-BOOKS_DIR = Path("data/Books")
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / "data" / "aviation_rag.db"
+BOOKS_DIR = BASE_DIR / "data" / "Books" 
 
 # Book definitions mapping filenames to Subject and Display Title
 BOOK_METADATA = {

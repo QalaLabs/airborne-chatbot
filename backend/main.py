@@ -29,8 +29,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-DB_PATH = Path("data/aviation_rag.db")
-LEADS_FILE = Path("data/leads.json")
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / "data" / "aviation_rag.db"
+LEADS_FILE = BASE_DIR / "data" / "leads.json"
+STATIC_DIR = BASE_DIR / "static" 
 if not LEADS_FILE.parent.exists():
     LEADS_FILE.parent.mkdir(parents=True, exist_ok=True)
 if not LEADS_FILE.exists():
@@ -204,20 +206,20 @@ def get_knowledge_base():
     return ai_engine.kb
 
 # Serve widget and static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 @app.get("/widget.js")
 def get_widget_js():
-    return FileResponse("static/widget.js", media_type="application/javascript")
+    return FileResponse(str(STATIC_DIR / "widget.js", media_type="application/javascript")
 
 @app.get("/widget.css")
 def get_widget_css():
-    return FileResponse("static/widget.css", media_type="text/css")
+    return FileResponse(str(STATIC_DIR / "widget.css", media_type="text/css")
 
 @app.get("/embed-demo")
 def embed_demo():
-    return FileResponse("static/embed-demo.html")
+    return FileResponse(str(STATIC_DIR / "embed-demo.html"))
 
 @app.get("/")
 def home():
-    return FileResponse("static/index.html")
+    return FileResponse(str(STATIC_DIR / "index.html"))

@@ -5,8 +5,9 @@ from datetime import date
 from pathlib import Path
 from typing import Dict, Any, Optional
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 DAILY_CAP_SECONDS = 30 * 60  # 30 minutes = 1800 seconds
-DB_PATH = Path("data/aviation_rag.db")
+DB_PATH = BASE_DIR / "data" / "aviation_rag.db" 
 
 class SessionManager:
     def __init__(self, db_path: Path = DB_PATH):
