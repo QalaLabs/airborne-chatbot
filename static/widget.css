@@ -741,3 +741,157 @@
     right: 16px;
   }
 }
+
+/* ==========================================================================
+   EduBot Architecture: Persona Selector & "Under the Hood" Diagnostics
+   ========================================================================== */
+
+/* Persona Selector in Header */
+.airborne-persona-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 14px 6px 14px;
+  background: rgba(7, 17, 30, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.airborne-persona-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.airborne-persona-select {
+  background: #0f2744;
+  color: #f8fafc;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 6px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.airborne-persona-select:hover,
+.airborne-persona-select:focus {
+  border-color: #f59e0b;
+}
+
+/* Under the Hood In-Message Collapsible Accordion */
+.airborne-uth-container {
+  margin-top: 10px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 8px;
+  font-size: 11px;
+}
+
+.airborne-uth-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 5px 8px;
+  cursor: pointer;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 600;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.airborne-uth-toggle:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.airborne-uth-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.airborne-uth-badge {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.airborne-uth-arrow {
+  font-size: 9px;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+.airborne-uth-container.open .airborne-uth-arrow {
+  transform: rotate(180deg);
+}
+
+.airborne-uth-drawer {
+  display: none;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 8px 10px;
+  margin-top: -1px;
+  animation: airborne-slide-up 0.2s ease;
+}
+
+.airborne-uth-container.open .airborne-uth-drawer {
+  display: block;
+}
+
+.airborne-uth-row {
+  margin: 4px 0;
+  line-height: 1.4;
+  color: #1e293b;
+}
+
+.airborne-uth-row strong {
+  color: #0f172a;
+}
+
+.airborne-uth-chunk {
+  margin-top: 4px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 3px solid #2563eb;
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #334155;
+  max-height: 85px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+/* Agent Pill Badges */
+.airborne-agent-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #1d4ed8;
+  margin-bottom: 6px;
+}

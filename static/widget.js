@@ -31,11 +31,14 @@
 
   // State Management
   const STORAGE_KEY = "airborne_student_id";
+  const PERSONA_STORAGE_KEY = "airborne_student_persona";
   let studentId = localStorage.getItem(STORAGE_KEY);
   if (!studentId) {
     studentId = "std_" + Math.random().toString(36).substring(2, 11) + "_" + Date.now().toString(36);
     localStorage.setItem(STORAGE_KEY, studentId);
   }
+
+  let currentPersona = localStorage.getItem(PERSONA_STORAGE_KEY) || "ground_school_cadet";
 
   let isOpen = false;
   let remainingSeconds = 1800; // 30 minutes default
@@ -108,6 +111,18 @@
               </svg>
             </button>
           </div>
+        </div>
+
+        <!-- Student Persona Switcher (EduBot Multi-Agent) -->
+        <div class="airborne-persona-bar">
+          <div class="airborne-persona-label">
+            <span>🎯 Mode:</span>
+          </div>
+          <select class="airborne-persona-select" id="airborne-persona-select" title="Change Student Persona Profile">
+            <option value="aspiring_beginner">10+2 / Arts / Commerce Beginner</option>
+            <option value="ground_school_cadet" selected>DGCA Ground School Cadet</option>
+            <option value="conversion_pilot">Foreign CPL Conversion / ATPL</option>
+          </select>
         </div>
 
         <!-- 30-Minute Usage Cap Bar -->
@@ -187,6 +202,38 @@
   const callbackModal = document.getElementById("airborne-callback-modal");
   const callbackForm = document.getElementById("airborne-callback-form");
   const callbackCancel = document.getElementById("airborne-cb-cancel");
+  const personaSelect = document.getElementById("airborne-persona-select");
+
+  if (personaSelect) {
+    personaSelect.value = currentPersona;
+    personaSelect.addEventListener("change", (e) => {
+      currentPersona = e.target.value;
+      localStorage.setItem(PERSONA_STORAGE_KEY, currentPersona);
+      const labels = {
+        "aspiring_beginner": "10+2 Beginner / Arts & Commerce",
+        "ground_school_cadet": "DGCA Ground School Cadet",
+        "conversion_pilot": "Foreign CPL Conversion / ATPL"
+      };
+      appendMessage("bot", `🎯 Switched flight tutor mode to **${labels[currentPersona] || currentPersona}**. Ground theory explanations and notes are now adapted for this profile.`);
+    });
+  }
+
+  function escapeHtml(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function getAgentLabel(agent) {
+    const labels = {
+      "TheoryTutorAgent": "DGCA Theory Ground Tutor",
+      "AdmissionsAdvisorAgent": "Admissions & Loan Advisor",
+      "RegulatoryVerifierAgent": "DGCA Regulatory Verifier",
+      "SecurityGuardrail": "Airborne Security Guardrail",
+      "ScopeGuardrail": "Aviation Scope Guardrail",
+      "OnboardingRouter": "Flight Onboarding Desk"
+    };
+    return labels[agent] || agent || "EduBot Agent";
+  }
 
   // Format mm:ss
   function formatTime(sec) {
@@ -357,7 +404,7 @@
   }
 
   // Append Message to Thread
-  function appendMessage(sender, text, chips = [], escalation = null) {
+  function appendMessage(sender, text, chips = [], escalation = null, underTheHood = null, agentHandled = null) {
     const msgDiv = document.createElement("div");
     msgDiv.className = `airborne-msg ${sender}`;
 
@@ -366,8 +413,38 @@
 
     let innerContent = `
       <div class="airborne-bubble">
-        ${parseMarkdown(text)}
     `;
+
+    // Multi-Agent Identifier Badge
+    if (sender === "bot" && agentHandled) {
+      innerContent += `<div class="airborne-agent-pill">🤖 ${getAgentLabel(agentHandled)}</div>`;
+    }
+
+    innerContent += parseMarkdown(text);
+
+    // Collapsible "Under the Hood" Diagnostic Accordion (EduBot Pattern)
+    if (sender === "bot" && underTheHood && underTheHood.matched) {
+      const conf = underTheHood.confidence_score || 95;
+      innerContent += `
+        <div class="airborne-uth-container">
+          <button type="button" class="airborne-uth-toggle" onclick="this.parentElement.classList.toggle('open')">
+            <div class="airborne-uth-left">
+              <span>⚙️ Under the Hood</span>
+              <span class="airborne-uth-badge">${conf}% Match</span>
+            </div>
+            <span class="airborne-uth-arrow">▼</span>
+          </button>
+          <div class="airborne-uth-drawer">
+            <div class="airborne-uth-row"><strong>📖 Background Source:</strong> <span>${escapeHtml(underTheHood.primary_book || 'DGCA Syllabus')} (p. ${underTheHood.page_number || '1'})</span></div>
+            <div class="airborne-uth-row"><strong>🎯 Subject:</strong> <span>${escapeHtml(underTheHood.subject || 'Ground School')}</span></div>
+            <div class="airborne-uth-row"><strong>🔍 Method:</strong> <span>${escapeHtml(underTheHood.retrieval_method || 'RAG Search')}</span></div>
+            <div class="airborne-uth-row"><strong>📑 Extracted Chunk Excerpt:</strong>
+              <div class="airborne-uth-chunk">${escapeHtml(underTheHood.chunk_excerpt || '')}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
 
     // Escalation Prompt (WhatsApp / Phone)
     if (escalation && escalation.needed) {
@@ -457,7 +534,7 @@
       const res = await fetch(`${apiBase}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ student_id: studentId, message: text })
+        body: JSON.stringify({ student_id: studentId, message: text, persona: currentPersona })
       });
 
       hideTypingIndicator();
@@ -473,7 +550,7 @@
         updateTimerUI();
       }
 
-      appendMessage("bot", data.answer, data.chips, data.escalation);
+      appendMessage("bot", data.answer, data.chips, data.escalation, data.under_the_hood, data.agent_handled);
     } catch (err) {
       hideTypingIndicator();
       appendMessage("bot", "I am having trouble reaching the flight server right now. Please connect directly via WhatsApp or call our 24/7 helpline.", [], {
@@ -564,6 +641,12 @@
     close: () => toggleChat(false),
     toggle: () => toggleChat(),
     send: (msg) => sendMessage(msg),
+    setPersona: (p) => {
+      currentPersona = p;
+      localStorage.setItem(PERSONA_STORAGE_KEY, p);
+      if (personaSelect) personaSelect.value = p;
+    },
+    getPersona: () => currentPersona,
     openCallbackModal: () => callbackModal.classList.add("active"),
     resetCap: async () => {
       try {

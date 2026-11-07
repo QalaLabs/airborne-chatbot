@@ -1,0 +1,837 @@
+{
+  "total_questions": 50,
+  "passed": 50,
+  "failed": 0,
+  "pass_rate": 100.0,
+  "total_time_seconds": 0.75,
+  "failures": [],
+  "details": [
+    {
+      "id": 1,
+      "subject": "Principles of Flight",
+      "question": "What causes aerodynamic stall and how does angle of attack affect it?",
+      "matched_keywords": [
+        "stall",
+        "separation",
+        "angle of attack",
+        "airflow"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 11.23,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 205) \u2014 *Subje"
+    },
+    {
+      "id": 2,
+      "subject": "Principles of Flight",
+      "question": "How do wingtip vortices generate induced drag on an aircraft wing?",
+      "matched_keywords": [
+        "vortex",
+        "induced drag",
+        "downwash"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 28.79,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 119) \u2014 *Subje"
+    },
+    {
+      "id": 3,
+      "subject": "Principles of Flight",
+      "question": "What is adverse yaw and how does the rudder counteract it during turns?",
+      "matched_keywords": [
+        "adverse yaw",
+        "aileron",
+        "rudder",
+        "yaw"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 7.2,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 353) \u2014 *Subje"
+    },
+    {
+      "id": 4,
+      "subject": "Principles of Flight",
+      "question": "Explain ground effect on aircraft lift and induced drag during takeoff and landing",
+      "matched_keywords": [
+        "ground effect",
+        "induced drag"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 16.71,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 108) \u2014 *Subje"
+    },
+    {
+      "id": 5,
+      "subject": "Principles of Flight",
+      "question": "How does the center of pressure move with angle of attack in cambered aerofoils?",
+      "matched_keywords": [
+        "camber",
+        "angle of attack",
+        "aerofoil"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 11.81,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 65) \u2014 *Subjec"
+    },
+    {
+      "id": 6,
+      "subject": "Principles of Flight",
+      "question": "How does wing dihedral provide lateral stability in roll?",
+      "matched_keywords": [
+        "dihedral",
+        "lateral stability",
+        "roll",
+        "sideslip"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 7.89,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 322) \u2014 *Subje"
+    },
+    {
+      "id": 7,
+      "subject": "Principles of Flight",
+      "question": "What is Mach tuck and shock stall in high speed transonic flight?",
+      "matched_keywords": [
+        "mach",
+        "shock",
+        "stall",
+        "transonic"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 16.66,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 429) \u2014 *Subje"
+    },
+    {
+      "id": 8,
+      "subject": "Principles of Flight",
+      "question": "How does wing aspect ratio affect induced drag and aerodynamic efficiency?",
+      "matched_keywords": [
+        "aspect ratio",
+        "induced drag"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 11.49,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 123) \u2014 *Subje"
+    },
+    {
+      "id": 9,
+      "subject": "Aviation Meteorology",
+      "question": "What are the altimeter pressure settings for QFE, QNH, and standard 1013 hPa?",
+      "matched_keywords": [
+        "qfe",
+        "qnh",
+        "altimeter",
+        "pressure"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 13.73,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Aircraft Instrumentation** (Page 70) \u2014 *Subject: Instrumenta"
+    },
+    {
+      "id": 10,
+      "subject": "Aviation Meteorology",
+      "question": "What is the difference between Environmental Lapse Rate and Dry Adiabatic Lapse Rate?",
+      "matched_keywords": [
+        "lapse rate",
+        "dalr",
+        "temperature",
+        "adiabatic"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 10.3,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 93) \u2014 *Subject: Aviation Meteor"
+    },
+    {
+      "id": 11,
+      "subject": "Aviation Meteorology",
+      "question": "How does Coriolis force affect geostrophic wind direction in the Northern Hemisphere?",
+      "matched_keywords": [
+        "coriolis",
+        "geostrophic",
+        "wind",
+        "pressure gradient"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 15.34,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 159) \u2014 *Subject: Aviation Meteo"
+    },
+    {
+      "id": 12,
+      "subject": "Aviation Meteorology",
+      "question": "What are the formation stages of a Cumulonimbus cloud and associated microburst hazards?",
+      "matched_keywords": [
+        "cumulonimbus",
+        "microburst",
+        "thunderstorm"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 6.69,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 115) \u2014 *Subject: Aviation Meteo"
+    },
+    {
+      "id": 13,
+      "subject": "Aviation Meteorology",
+      "question": "What are the conditions required for radiation fog formation versus advection fog?",
+      "matched_keywords": [
+        "radiation fog",
+        "advection fog"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 13.78,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 285) \u2014 *Subject: Aviation Meteo"
+    },
+    {
+      "id": 14,
+      "subject": "Aviation Meteorology",
+      "question": "What causes Clear Air Turbulence around upper-level jet stream cores?",
+      "matched_keywords": [
+        "jet stream",
+        "shear"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 32.84,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 114) \u2014 *Subject: Aviation Meteo"
+    },
+    {
+      "id": 15,
+      "subject": "Aviation Meteorology",
+      "question": "Explain mountain waves, rotor clouds, and standing lenticular cloud hazards",
+      "matched_keywords": [
+        "mountain wave",
+        "rotor",
+        "lenticular"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 9.87,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 113) \u2014 *Subject: Aviation Meteo"
+    },
+    {
+      "id": 16,
+      "subject": "Aviation Meteorology",
+      "question": "What is the difference between Clear Ice and Rime Ice in aircraft icing?",
+      "matched_keywords": [
+        "clear ice",
+        "rime ice",
+        "supercooled",
+        "droplets"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 18.24,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 303) \u2014 *Subject: Aviation Meteo"
+    },
+    {
+      "id": 17,
+      "subject": "Indian Meteorology",
+      "question": "What is the Southwest Monsoon mechanism and Tropical Easterly Jet?",
+      "matched_keywords": [
+        "monsoon",
+        "trough",
+        "easterly jet",
+        "tibetan"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 9.55,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Aviation Meteorology: IC Joshi 7th Edition** (Page 115) \u2014 *Subject: Indian M"
+    },
+    {
+      "id": 18,
+      "subject": "Indian Meteorology",
+      "question": "What is the altitude and wind speed of Tropical Easterly Jet over South India?",
+      "matched_keywords": [
+        "tropical easterly jet",
+        "easterlies",
+        "summer",
+        "southern india"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 20.35,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 187) \u2014 *Subject: Aviation Meteo"
+    },
+    {
+      "id": 19,
+      "subject": "Indian Meteorology",
+      "question": "How do Western Disturbances cause winter fog and snow over North India airfields?",
+      "matched_keywords": [
+        "western disturbances",
+        "fog",
+        "mediterranean",
+        "snow"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 16.2,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Aviation Meteorology: IC Joshi 7th Edition** (Page 182) \u2014 *Subject: Indian M"
+    },
+    {
+      "id": 20,
+      "subject": "Indian Meteorology",
+      "question": "Explain Nor'westers or Kalbaisakhi pre-monsoon convective squalls in India",
+      "matched_keywords": [
+        "nor'wester",
+        "kalbaisakhi",
+        "squall",
+        "convective"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 4.23,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Aviation Meteorology: IC Joshi 7th Edition** (Page 240) \u2014 *Subject: Indian M"
+    },
+    {
+      "id": 21,
+      "subject": "Air Regulations",
+      "question": "What are the rules of the air when two aircraft approach head on?",
+      "matched_keywords": [
+        "head-on",
+        "right",
+        "heading",
+        "collision"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 26.41,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 42) \u2014 *Subject: Air Regulation"
+    },
+    {
+      "id": 22,
+      "subject": "Air Regulations",
+      "question": "What is the right of way rule when two power-driven aircraft are converging at the same level?",
+      "matched_keywords": [
+        "converging",
+        "right",
+        "give way",
+        "aircraft"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 21.4,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 42) \u2014 *Subject: Air Regulation"
+    },
+    {
+      "id": 23,
+      "subject": "Air Regulations",
+      "question": "Explain the semi-circular cruising level rule for eastbound and westbound flights in Indian airspace",
+      "matched_keywords": [
+        "semi-circular",
+        "cruising level",
+        "odd",
+        "even",
+        "track"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 15.42,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 125) \u2014 *Subject: Air Regulatio"
+    },
+    {
+      "id": 24,
+      "subject": "Air Regulations",
+      "question": "What are the standard SSR emergency squawk codes for hijack, radio failure, and emergency?",
+      "matched_keywords": [
+        "7500",
+        "7600",
+        "7700",
+        "emergency"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 12.09,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 310) \u2014 *Subject: Air Regulatio"
+    },
+    {
+      "id": 25,
+      "subject": "Air Regulations",
+      "question": "What are the DGCA Flight Duty Time Limitations for daily and weekly maximum flight hours?",
+      "matched_keywords": [
+        "flight duty time",
+        "fdtl",
+        "flight time",
+        "rest"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 18.05,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 260) \u2014 *Subject: Air Regulatio"
+    },
+    {
+      "id": 26,
+      "subject": "Air Regulations",
+      "question": "What are the Visual Flight Rules VFR visibility and cloud distance minima in controlled airspace?",
+      "matched_keywords": [
+        "vfr",
+        "visibility",
+        "cloud",
+        "distance"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 17.17,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 88) \u2014 *Subject: Air Regulation"
+    },
+    {
+      "id": 27,
+      "subject": "Air Regulations",
+      "question": "What are the DGCA logbook entry maintenance requirements under Aircraft Rule 67A?",
+      "matched_keywords": [
+        "logbook",
+        "rule 67a",
+        "48 hours",
+        "cfi"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 16.07,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 190) \u2014 *Subject: Air Regulatio"
+    },
+    {
+      "id": 28,
+      "subject": "Air Regulations",
+      "question": "What mandatory aircraft documents must be carried on board an Indian registered aircraft under Rule 7?",
+      "matched_keywords": [
+        "rule 7",
+        "certificate of registration",
+        "airworthiness",
+        "license"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 14.58,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 190) \u2014 *Subject: Air Regulatio"
+    },
+    {
+      "id": 29,
+      "subject": "General Navigation",
+      "question": "What is the difference between a Great Circle track and a Rhumb Line track on Mercator charts?",
+      "matched_keywords": [
+        "great circle",
+        "rhumb line",
+        "mercator",
+        "track"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 10.89,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 309) \u2014 *Subject: General Navigati"
+    },
+    {
+      "id": 30,
+      "subject": "General Navigation",
+      "question": "How is Earth convergence and conversion angle calculated between two meridians?",
+      "matched_keywords": [
+        "convergence",
+        "conversion angle",
+        "meridian",
+        "latitude"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 10.01,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 251) \u2014 *Subject: General Navigati"
+    },
+    {
+      "id": 31,
+      "subject": "General Navigation",
+      "question": "How does True Airspeed relate to Indicated Airspeed with increasing altitude and temperature?",
+      "matched_keywords": [
+        "true airspeed",
+        "indicated airspeed",
+        "density",
+        "altitude"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 11.05,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 41) \u2014 *Subjec"
+    },
+    {
+      "id": 32,
+      "subject": "General Navigation",
+      "question": "How is the 1 in 60 rule applied to calculate track error and closing angle in flight navigation?",
+      "matched_keywords": [
+        "1 in 60",
+        "track error",
+        "heading"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 17.1,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 210) \u2014 *Subject: General Navigati"
+    },
+    {
+      "id": 33,
+      "subject": "Flight Planning",
+      "question": "Explain the Point of Equal Time formula in flight planning between departure and destination",
+      "matched_keywords": [
+        "point of equal time",
+        "pet",
+        "critical point"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 15.91,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 492) \u2014 *Subject: General Navigati"
+    },
+    {
+      "id": 34,
+      "subject": "Flight Planning",
+      "question": "How is the Point of Safe Return calculated for aircraft fuel endurance?",
+      "matched_keywords": [
+        "point of safe return",
+        "psr",
+        "endurance",
+        "fuel"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 14.66,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Flight Planning & Monitoring** (Page 265) \u2014 *Subject: Flight"
+    },
+    {
+      "id": 35,
+      "subject": "Radio Navigation",
+      "question": "Explain how VOR navigation aids determine aircraft radial and TO FROM indication",
+      "matched_keywords": [
+        "vor",
+        "radial"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 17.06,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 302) \u2014 *Subject: Radio Navi"
+    },
+    {
+      "id": 36,
+      "subject": "Radio Navigation",
+      "question": "What is DME slant range error and when is it most significant relative to ground distance?",
+      "matched_keywords": [
+        "dme",
+        "slant range",
+        "distance"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 14.26,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 258) \u2014 *Subject: Radio Navi"
+    },
+    {
+      "id": 37,
+      "subject": "Radio Navigation",
+      "question": "Explain ILS Localizer and Glide Path beam frequencies and coverage sectors",
+      "matched_keywords": [
+        "ils",
+        "localizer",
+        "glide path",
+        "runway"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 12.74,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 157) \u2014 *Subject: Radio Navi"
+    },
+    {
+      "id": 38,
+      "subject": "Radio Navigation",
+      "question": "What causes NDB coastal refraction and night effect in ADF navigation?",
+      "matched_keywords": [
+        "ndb",
+        "adf",
+        "coastal refraction",
+        "night effect"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 19.28,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 338) \u2014 *Subject: Radio Navi"
+    },
+    {
+      "id": 39,
+      "subject": "Radio Navigation",
+      "question": "What is the difference between Primary Surveillance Radar and Secondary Surveillance Radar?",
+      "matched_keywords": [
+        "primary radar",
+        "secondary radar",
+        "transponder",
+        "interrogation"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 7.68,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 234) \u2014 *Subject: Radio Navi"
+    },
+    {
+      "id": 40,
+      "subject": "Radio Navigation",
+      "question": "How does GPS RAIM Receiver Autonomous Integrity Monitoring detect satellite anomalies?",
+      "matched_keywords": [
+        "gps",
+        "raim",
+        "satellite",
+        "integrity"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 8.5,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 325) \u2014 *Subject: Radio Navi"
+    },
+    {
+      "id": 41,
+      "subject": "Airframes and Systems",
+      "question": "How does a Fly-by-Wire flight control system operate with hydraulic actuators?",
+      "matched_keywords": [
+        "actuator",
+        "control"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 15.6,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Airframes, Hydraulics & Systems** (Page 189) \u2014 *Subject: "
+    },
+    {
+      "id": 42,
+      "subject": "Airframes and Systems",
+      "question": "What is the function of a hydraulic accumulator and nitrogen pre-charge in aircraft hydraulic systems?",
+      "matched_keywords": [
+        "accumulator",
+        "hydraulic",
+        "nitrogen",
+        "pressure"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 16.03,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Airframes, Hydraulics & Systems** (Page 66) \u2014 *Subject: A"
+    },
+    {
+      "id": 43,
+      "subject": "Powerplant",
+      "question": "What causes carburetor icing in piston aircraft engines and what happens when carb heat is applied?",
+      "matched_keywords": [
+        "heat",
+        "icing",
+        "ice",
+        "engine"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 16.53,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Powerplant & Jet Engines** (Page 122) \u2014 *Subject: Powerpl"
+    },
+    {
+      "id": 44,
+      "subject": "Powerplant",
+      "question": "Why do aero-engine magnetos operate independently of the aircraft battery and electrical system?",
+      "matched_keywords": [
+        "magneto",
+        "ignition",
+        "spark",
+        "independent"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 17.62,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Powerplant & Jet Engines** (Page 70) \u2014 *Subject: Powerpla"
+    },
+    {
+      "id": 45,
+      "subject": "Powerplant",
+      "question": "What is the difference between high bypass and low bypass turbofan engines in propulsive efficiency?",
+      "matched_keywords": [
+        "bypass ratio",
+        "turbofan",
+        "efficiency"
+      ],
+      "keyword_ratio": 0.75,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 16.04,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Powerplant & Jet Engines** (Page 213) \u2014 *Subject: Powerpl"
+    },
+    {
+      "id": 46,
+      "subject": "Aircraft Electrics",
+      "question": "What is thermal runaway in aircraft Nickel Cadmium Ni-Cd batteries and how is it prevented?",
+      "matched_keywords": [
+        "battery",
+        "nickel cadmium"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 18.12,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Aircraft Electrics & Electronics** (Page 61) \u2014 *Subject: "
+    },
+    {
+      "id": 47,
+      "subject": "Radio Telephony",
+      "question": "What is the standard format and transmission components of an aeronautical MAYDAY distress message?",
+      "matched_keywords": [
+        "mayday",
+        "distress"
+      ],
+      "keyword_ratio": 0.5,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 10.35,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 120) \u2014 *Subject"
+    },
+    {
+      "id": 48,
+      "subject": "Radio Telephony",
+      "question": "What is the urgency signal PAN PAN and when should a pilot transmit PAN PAN instead of MAYDAY?",
+      "matched_keywords": [
+        "pan pan",
+        "urgency",
+        "safety",
+        "condition"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 12.63,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 149) \u2014 *Subject"
+    },
+    {
+      "id": 49,
+      "subject": "Radio Telephony",
+      "question": "What are the mandatory readback items for pilots receiving ATC air traffic control clearances?",
+      "matched_keywords": [
+        "readback",
+        "clearance",
+        "runway",
+        "altimeter"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 24.72,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 71) \u2014 *Subject:"
+    },
+    {
+      "id": 50,
+      "subject": "Radio Telephony",
+      "question": "What is the radio communication failure procedure under IFR in IMC instrument conditions?",
+      "matched_keywords": [
+        "communication failure",
+        "radio failure",
+        "7600",
+        "ifr"
+      ],
+      "keyword_ratio": 1.0,
+      "passed": true,
+      "is_hijacked_greeting": false,
+      "has_citations": true,
+      "latency_ms": 13.83,
+      "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 131) \u2014 *Subject"
+    }
+  ]
+}

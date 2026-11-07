@@ -20,9 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy backend code, static assets, pre-indexed RAG database, and configs
 COPY backend/ ./backend/
 COPY static/ ./static/
-COPY data/aviation_rag.db ./data/aviation_rag.db
-COPY data/leads.json ./data/leads.json
-COPY data/ocr_cache/ ./data/ocr_cache/
+COPY data/ ./data/
 COPY run.py .
 
 EXPOSE 8080

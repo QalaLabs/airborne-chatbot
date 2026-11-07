@@ -1,0 +1,230 @@
+{
+  "root": "DGCA Commercial Pilot Training Ground Curriculum",
+  "version": "1.2.0",
+  "total_levels": 3,
+  "subjects": {
+    "Principles of Flight": {
+      "title": "Principles of Flight & Aerodynamics",
+      "topics": [
+        "Lift, Drag & Aerofoil Characteristics",
+        "Stalling, Angle of Attack & Boundary Layer Control",
+        "Stability, Control Surfaces (Aileron, Elevator, Rudder) & Trim",
+        "High Speed Flight, Transonic Mach Tuck & Shockwave Stall",
+        "Ground Effect & Vortex Induced Drag"
+      ],
+      "keywords": [
+        "lift",
+        "drag",
+        "stall",
+        "angle of attack",
+        "aerofoil",
+        "airfoil",
+        "camber",
+        "rudder",
+        "aileron",
+        "elevator",
+        "dihedral",
+        "mach",
+        "transonic",
+        "vortex",
+        "ground effect"
+      ],
+      "chunk_count": 1325
+    },
+    "Aviation Meteorology": {
+      "title": "Aviation Meteorology & Weather Hazards",
+      "topics": [
+        "Altimetry, Atmospheric Pressure & QNH/QFE/QNE Settings",
+        "Lapse Rates, Atmospheric Stability & Inversions",
+        "Winds, Coriolis Force, Geostrophic Balance & Wind Shear",
+        "Clouds, Cumulonimbus, Thunderstorms & Microbursts",
+        "Fog (Radiation & Advection) & Aircraft Icing (Clear & Rime)",
+        "Upper Level Jet Streams & Clear Air Turbulence"
+      ],
+      "keywords": [
+        "altimeter",
+        "qnh",
+        "qfe",
+        "lapse rate",
+        "coriolis",
+        "geostrophic",
+        "cumulonimbus",
+        "fog",
+        "radiation fog",
+        "icing",
+        "rime",
+        "clear ice",
+        "cat",
+        "turbulence",
+        "jet stream"
+      ],
+      "chunk_count": 1141
+    },
+    "Indian Meteorology": {
+      "title": "Indian Climatology & Regional Aviation Weather",
+      "topics": [
+        "Southwest Monsoon Mechanism & Tropical Easterly Jet",
+        "Western Disturbances, Winter Fog & Snowfall",
+        "Pre-Monsoon Convective Squalls (Nor'westers & Kalbaisakhi)",
+        "Tropical Cyclones & Inter-Tropical Convergence Zone (ITCZ)"
+      ],
+      "keywords": [
+        "monsoon",
+        "easterly jet",
+        "somali jet",
+        "western disturbances",
+        "norwester",
+        "kalbaisakhi",
+        "andhi",
+        "itcz"
+      ],
+      "chunk_count": 5
+    },
+    "Air Regulations": {
+      "title": "Air Regulations & Rules of the Air",
+      "topics": [
+        "Rules of the Air (Right of Way, Head-On & Converging)",
+        "Semi-Circular Cruising Altitude System",
+        "Emergency SSR Transponder Squawk Codes (7500, 7600, 7700)",
+        "DGCA Flight Duty Time Limitations (FDTL)",
+        "Visual Flight Rules (VFR) & Instrument Flight Rules (IFR) Minima",
+        "Logbook Maintenance & Aircraft Documents Carriage"
+      ],
+      "keywords": [
+        "right of way",
+        "head on",
+        "converging",
+        "semi-circular",
+        "squawk",
+        "7500",
+        "7600",
+        "7700",
+        "fdtl",
+        "vfr",
+        "ifr",
+        "logbook",
+        "documents",
+        "rule 67"
+      ],
+      "chunk_count": 7
+    },
+    "General Navigation": {
+      "title": "General Navigation & Flight Planning",
+      "topics": [
+        "Great Circles, Rhumb Lines & Mercator/Lambert Projections",
+        "Earth Convergence & Conversion Angle",
+        "Airspeeds (IAS, CAS, EAS, TAS) & Density Corrections",
+        "1 in 60 Rule, Track Errors & Wind Triangle Calculations",
+        "Critical Point / Point of Equal Time (PET) & Point of Safe Return (PSR)"
+      ],
+      "keywords": [
+        "great circle",
+        "rhumb line",
+        "convergence",
+        "conversion angle",
+        "true airspeed",
+        "tas",
+        "ias",
+        "cas",
+        "1 in 60",
+        "point of equal time",
+        "point of safe return",
+        "psr",
+        "pet"
+      ],
+      "chunk_count": 1388
+    },
+    "Radio Navigation": {
+      "title": "Radio Navigation Aids & Radar Systems",
+      "topics": [
+        "VOR (VHF Omnidirectional Range) & Radial Tracking",
+        "DME (Distance Measuring Equipment) & Slant Range Geometry",
+        "ILS (Instrument Landing System) Localizer & Glide Path",
+        "NDB & Automatic Direction Finder (ADF) Errors (Coastal & Night Effect)",
+        "Surveillance Radar (PSR & SSR) & Transponders",
+        "GNSS, GPS Architecture & Receiver Autonomous Integrity Monitoring (RAIM)"
+      ],
+      "keywords": [
+        "vor",
+        "radial",
+        "dme",
+        "slant range",
+        "ils",
+        "localizer",
+        "glide path",
+        "ndb",
+        "adf",
+        "coastal refraction",
+        "night effect",
+        "radar",
+        "psr",
+        "ssr",
+        "raim",
+        "gps"
+      ],
+      "chunk_count": 736
+    },
+    "Aircraft Systems & Electrics": {
+      "title": "Aircraft Systems, Hydraulics & Electrical Infrastructure",
+      "topics": [
+        "Fly-by-Wire Flight Control Systems & Hydraulic Actuators",
+        "Hydraulic Accumulators & Nitrogen Pre-charge Functions",
+        "Aircraft Batteries & Nickel-Cadmium (Ni-Cd) Thermal Runaway"
+      ],
+      "keywords": [
+        "fly by wire",
+        "fbw",
+        "hydraulic",
+        "accumulator",
+        "nitrogen",
+        "thermal runaway",
+        "ni-cd",
+        "battery",
+        "electrics"
+      ],
+      "chunk_count": 0
+    },
+    "Powerplant": {
+      "title": "Aircraft Powerplants & Propulsion Systems",
+      "topics": [
+        "Piston Engine Carburetor Icing & Induction Heating",
+        "Aero-Engine Independent Magneto Dual Ignition Systems",
+        "Gas Turbine Turbofans: High Bypass vs Low Bypass Efficiency"
+      ],
+      "keywords": [
+        "carburetor",
+        "carburettor",
+        "carb heat",
+        "magneto",
+        "magnetos",
+        "ignition",
+        "spark plug",
+        "turbofan",
+        "bypass ratio",
+        "turbojet"
+      ],
+      "chunk_count": 991
+    },
+    "Radio Telephony": {
+      "title": "Radio Telephony Restricted (Aeronautical) & Phraseology",
+      "topics": [
+        "Distress Communications (MAYDAY) Format & Procedures",
+        "Urgency Communications (PAN PAN) Protocol",
+        "Mandatory ATC Readback Transmissions",
+        "Radio Communication Failure (RCF) Procedures under IFR"
+      ],
+      "keywords": [
+        "mayday",
+        "pan pan",
+        "distress",
+        "urgency",
+        "readback",
+        "clearance",
+        "communication failure",
+        "phraseology",
+        "rtr"
+      ],
+      "chunk_count": 267
+    }
+  }
+}

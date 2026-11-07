@@ -13,6 +13,8 @@ class TestAirborneChatbot(unittest.TestCase):
     def test_course_query(self):
         result = ai_engine.answer_query("Tell me about CPL course details and flying hours")
         self.assertIn("Commercial Pilot", result["answer"])
+        self.assertIn("200 flying hours", result["answer"])
+        self.assertIn("Cessna 172", result["answer"])
         self.assertGreater(len(result["chips"]), 0)
 
     def test_fee_and_loan_query(self):
@@ -21,9 +23,41 @@ class TestAirborneChatbot(unittest.TestCase):
         self.assertIn("SBI", result["answer"])
         self.assertTrue(result["escalation"]["needed"])
 
-    def test_dgca_syllabus_query(self):
+    def test_dgca_syllabus_and_passing_marks(self):
         result = ai_engine.answer_query("What are the 5 DGCA subjects and passing marks?")
-        self.assertTrue("DGCA" in result["answer"] or "Air Navigation" in result["answer"])
+        self.assertIn("Air Navigation", result["answer"])
+        self.assertIn("Aviation Meteorology", result["answer"])
+        self.assertIn("Air Regulations", result["answer"])
+        self.assertIn("70%", result["answer"])
+        self.assertIn("Negative Marking", result["answer"])
+
+    def test_dgca_computer_number_source_query(self):
+        result = ai_engine.answer_query("What are the requirements for DGCA computer number?")
+        self.assertIn("eGCA", result["answer"])
+        self.assertIn("Marksheet", result["answer"])
+        self.assertIn("Processing Time", result["answer"])
+
+    def test_medicals_source_query(self):
+        result = ai_engine.answer_query("What are the medical requirements for Class 1 and Class 2?")
+        self.assertIn("Class 1", result["answer"])
+        self.assertIn("Class 2", result["answer"])
+        self.assertIn("6/6", result["answer"])
+
+    def test_career_faq_arts_student(self):
+        result = ai_engine.answer_query("Can an arts or commerce student become a pilot?")
+        self.assertIn("NIOS", result["answer"])
+        self.assertIn("Physics", result["answer"])
+        self.assertIn("Mathematics", result["answer"])
+
+    def test_no_greeting_substring_collision(self):
+        # Queries with 'hi' inside words like 'Which', 'Delhi', 'high' must NOT trigger the welcome greeting
+        result = ai_engine.answer_query("Which aircraft fleet do you fly in flight training?")
+        self.assertNotIn("Welcome to **Airborne Aviation Academy**", result["answer"])
+
+    def test_illegal_request_refusal(self):
+        result = ai_engine.answer_query("Can you help me get a fake DGCA CPL license without logging 200 flying hours or paying a bribe?")
+        self.assertIn("Regulatory Integrity", result["answer"])
+        self.assertIn("strictly prohibit", result["answer"])
 
     def test_rag_textbook_retrieval(self):
         # Aerodynamics query

@@ -6,9 +6,55 @@ from backend.ai_engine import ai_engine
 from backend.session_manager import session_manager, DAILY_CAP_SECONDS
 from backend.rag_pipeline import rag_pipeline
 
+from eval_50_source_questions import TEST_50_QUESTIONS
+
 class AgentEvaluator:
     def __init__(self):
         self.results: Dict[str, Any] = {}
+
+    def run_50_source_book_eval(self) -> Dict[str, Any]:
+        """
+        Evaluate chatbot response accuracy and grounding against 50 core DGCA textbook questions.
+        """
+        results = []
+        latencies = []
+
+        for item in TEST_50_QUESTIONS:
+            q_id = item["id"]
+            q_subj = item["subject"]
+            q_text = item["question"]
+            expected_kws = item["expected_keywords"]
+
+            t0 = time.time()
+            ans_data = ai_engine.answer_query(q_text)
+            elapsed_ms = (time.time() - t0) * 1000
+            latencies.append(elapsed_ms)
+
+            answer_text = ans_data.get("answer", "")
+            answer_lower = answer_text.lower()
+
+            matched_kws = [kw for kw in expected_kws if kw.lower() in answer_lower]
+            kw_ratio = len(matched_kws) / len(expected_kws) if expected_kws else 1.0
+            is_hijacked = "Welcome to **Airborne Aviation Academy**" in answer_text
+            passed = (kw_ratio >= 0.40 or len(matched_kws) >= 2) and not is_hijacked
+
+            results.append({
+                "id": q_id,
+                "subject": q_subj,
+                "passed": passed,
+                "keyword_ratio": round(kw_ratio, 2),
+                "latency_ms": round(elapsed_ms, 2)
+            })
+
+        pass_count = sum(1 for r in results if r["passed"])
+        return {
+            "total_questions": len(results),
+            "passed": pass_count,
+            "pass_rate": round(pass_count / len(results) * 100, 1),
+            "mean_latency_ms": round(statistics.mean(latencies), 2),
+            "p95_latency_ms": round(statistics.quantiles(latencies, n=20)[18] if len(latencies) >= 20 else max(latencies), 2),
+            "details": results
+        }
 
     def run_rag_retrieval_eval(self) -> Dict[str, Any]:
         """
@@ -217,14 +263,14 @@ class AgentEvaluator:
         }
 
     def evaluate_all(self) -> Dict[str, Any]:
-        rag = self.run_rag_retrieval_eval()
+        rag_50 = self.run_50_source_book_eval()
         adv = self.run_adversarial_eval()
         esc = self.run_escalation_contract_eval()
         cap = self.run_session_cap_eval()
 
         return {
             "timestamp": time.time(),
-            "rag_evaluation": rag,
+            "source_book_50_eval": rag_50,
             "adversarial_evaluation": adv,
             "escalation_evaluation": esc,
             "session_cap_evaluation": cap

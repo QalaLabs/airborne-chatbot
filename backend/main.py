@@ -13,6 +13,7 @@ from typing import Optional, Dict, Any
 
 from backend.session_manager import session_manager
 from backend.ai_engine import ai_engine
+from backend.models.student_profile import StudentPersona
 
 app = FastAPI(
     title="Airborne Aviation AI Assistant API",
@@ -74,6 +75,11 @@ class SessionHeartbeatRequest(BaseModel):
 class ChatRequest(BaseModel):
     student_id: str
     message: str
+    persona: Optional[StudentPersona] = StudentPersona.GROUND_SCHOOL_CADET
+
+class PersonaUpdateRequest(BaseModel):
+    student_id: str
+    persona: StudentPersona
 
 class LeadRequest(BaseModel):
     name: str
@@ -140,16 +146,23 @@ def chat(req: ChatRequest, request: Request):
     # Record 15 seconds interaction time per query turn with IP binding
     session = session_manager.record_activity(student_id, elapsed_seconds=15, client_ip=client_ip)
 
-    # Process query with Aviation AI Engine (with Scope Guardrail & Gemini RAG Synthesis)
-    ai_result = ai_engine.answer_query(message)
+    # Process query with Aviation AI Engine (using EduBot IntentRouter & Subagents)
+    persona = req.persona or StudentPersona.GROUND_SCHOOL_CADET
+    ai_result = ai_engine.answer_query(message, persona=persona)
 
     return {
         "answer": ai_result["answer"],
         "chips": ai_result.get("chips", []),
         "escalation": ai_result.get("escalation", {}),
+        "under_the_hood": ai_result.get("under_the_hood", None),
+        "agent_handled": ai_result.get("agent_handled", "AviationAIEngine"),
         "session": session,
         "is_capped": session["is_capped"]
     }
+
+@app.post("/api/persona/update")
+def update_persona(req: PersonaUpdateRequest):
+    return {"status": "success", "student_id": req.student_id, "persona": req.persona}
 
 @app.post("/api/leads")
 def capture_lead(req: LeadRequest):

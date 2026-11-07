@@ -296,20 +296,27 @@ class AviationRAGPipeline:
         Executes hybrid BM25 full-text search against the DGCA aviation textbooks.
         Requires meaningful aviation query terms.
         """
-        # Stopwords to exclude from FTS match query to avoid false positives
+        # Stopwords to exclude from FTS match query to avoid false positives and noise
         STOPWORDS = {
             "what", "is", "the", "and", "or", "to", "for", "in", "on", "a", "an", "of", "how",
             "does", "do", "can", "tell", "me", "about", "give", "please", "with", "from",
-            "this", "that", "it", "are", "be", "have", "has", "i", "you", "we", "they"
+            "this", "that", "it", "are", "be", "have", "has", "i", "you", "we", "they",
+            "explain", "difference", "between", "causes", "caused", "happens", "applied",
+            "when", "which", "where", "why", "versus", "relate", "increasing", "decreasing",
+            "calculated", "during", "associated", "affect", "affects", "relative", "operating",
+            "operate", "provide", "counteract", "required", "formation", "determine", "significant"
         }
         
         words = re.sub(r'[^a-zA-Z0-9\s]', '', query).split()
         cleaned_words = [w for w in words if len(w) > 2 and w.lower() not in STOPWORDS]
         if not cleaned_words:
+            # Fallback to general words if all words were pruned
+            cleaned_words = [w for w in words if len(w) > 2]
+        if not cleaned_words:
             return []
 
-        # Build FTS match expression: require matching high-value terms
-        match_query = " OR ".join([f'"{w}"*' for w in cleaned_words[:6]])
+        # Build FTS match expression: require matching high-value terms (up to 8)
+        match_query = " OR ".join([f'"{w}"*' for w in cleaned_words[:8]])
 
         sql = """
             SELECT 
@@ -329,22 +336,35 @@ class AviationRAGPipeline:
             sql += " AND c.subject LIKE ?"
             params.append(f"%{subject_filter}%")
 
+        # Fetch extra candidates to rank substantive explanatory chunks over TOCs or empty quizzes
+        fetch_limit = top_k * 3
         sql += " ORDER BY rank_score ASC LIMIT ?;"
-        params.append(top_k)
+        params.append(fetch_limit)
 
         results = []
         try:
             with self._get_connection() as con:
                 rows = con.execute(sql, params).fetchall()
+                candidates = []
                 for row in rows:
-                    results.append({
+                    text_sample = row[4].strip()
+                    # Penalize table of contents with dots or pure index
+                    is_toc = ". . . ." in text_sample or text_sample.count("....") >= 2
+                    is_quiz = text_sample.startswith("Questions\n") or text_sample.startswith("Answers\n")
+                    penalty = 5.0 if is_toc else (2.0 if is_quiz else 0.0)
+
+                    candidates.append({
                         "chunk_id": row[0],
                         "book_title": row[1],
                         "subject": row[2],
                         "page_number": row[3],
                         "text": row[4],
-                        "score": round(abs(row[5]), 3)
+                        "score": round(abs(row[5]) - penalty, 3)
                     })
+
+                # Sort by penalized score descending (higher is better in abs)
+                candidates.sort(key=lambda x: x["score"], reverse=True)
+                results = candidates[:top_k]
         except Exception as e:
             print(f"[RAG] Search error: {e}")
 
