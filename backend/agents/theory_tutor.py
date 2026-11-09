@@ -19,6 +19,13 @@ def clean_textbook_text(raw_text: str) -> str:
     cleaned = text.strip()
     return cleaned
 
+def is_question_bank_fragment(raw_text: str) -> bool:
+    """Detects if chunk is predominantly a test bank with options a, b, c, d"""
+    import re
+    lines = [line.strip().lower() for line in raw_text.splitlines() if line.strip()]
+    single_letters = sum(1 for line in lines if line in ['a', 'b', 'c', 'd', 'a.', 'b.', 'c.', 'd.'])
+    return single_letters >= 3 or len(re.findall(r'\b[a-d]\.\b', raw_text)) >= 3
+
 class TheoryTutorAgent:
     """
     Autonomous subagent specialized in resolving DGCA Ground School theoretical doubts
@@ -164,7 +171,7 @@ class TheoryTutorAgent:
             f"{cleaned_text}\n"
         )
 
-        if len(rag_results) > 1:
+        if len(rag_results) > 1 and not is_question_bank_fragment(rag_results[1]["text"]):
             clean_sec = clean_textbook_text(rag_results[1]["text"])
             if len(clean_sec) > 300:
                 clean_sec = clean_sec[:300].rsplit(".", 1)[0] + "."
