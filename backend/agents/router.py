@@ -165,6 +165,17 @@ class IntentRouter:
             return False
         return any(pattern.search(lower) for pattern in NON_AVIATION_PATTERNS)
 
+    def is_end_of_session(self, message: str) -> bool:
+        """Detects if user indicates they have no further questions or are concluding the study session"""
+        lower = message.strip().lower()
+        patterns = [
+            r'\b(no\s*(?:other|more|further)?\s*questions?|no\s*doubts?)\b',
+            r'\b(that(?:[\'’]s|\s+is)\s*all|nothing\s*else|nothing\s*more)\b',
+            r'\b(i(?:[\'’]m|\s+am)\s*done|done\s*for\s*now|all\s*good|all\s*clear)\b',
+            r'\b(thank\s*you\s*(?:that(?:[\'’]s|\s+is)\s*all|so\s*much)?)\b'
+        ]
+        return any(re.search(p, lower) for p in patterns) and len(lower.split()) <= 7
+
     def generate_escalation_data(self, query: str, reason: str) -> Dict[str, Any]:
         academy = self.kb.get("academy", {})
         wa_number = academy.get("whatsapp_number", "+919876543210").replace("+", "").replace(" ", "")
@@ -264,6 +275,55 @@ class IntentRouter:
                     "chunk_excerpt": quiz_eval["explanation"]
                 },
                 "agent_handled": "DGCAQuizEngine"
+            }
+
+        # 4b. On-Demand DGCA Pariksha Practice Quiz Request (Explicit User Request)
+        if self.quiz_engine.is_on_demand_quiz_request(text):
+            subject_hint = getattr(self.theory_tutor, "last_subject", None)
+            quiz_data = self.quiz_engine.serve_quiz_for_query(text, subject=subject_hint)
+            return {
+                "answer": quiz_data["answer"],
+                "chips": quiz_data["chips"],
+                "escalation": default_escalation,
+                "under_the_hood": {
+                    "matched": True,
+                    "confidence_score": 100.0,
+                    "retrieval_method": "DGCA Pariksha Interactive Assessment (On Demand)",
+                    "primary_book": quiz_data["quiz"]["source"],
+                    "page_number": 1,
+                    "subject": quiz_data["quiz"]["subject"],
+                    "syllabus_breadcrumb": f"DGCA CAR Sec 7 > {quiz_data['quiz']['subject']} Practice CBT",
+                    "recommended_next": "Answer submission and theoretical review",
+                    "chunk_excerpt": quiz_data["quiz"]["explanation"]
+                },
+                "agent_handled": "DGCAQuizEngine"
+            }
+
+        # 4c. End-of-Session Trigger ("no other question", "that is all", "done for now")
+        if self.is_end_of_session(text):
+            return {
+                "answer": (
+                    "### 🎓 **Great session today, Cadet!** ✈️\n\n"
+                    "You've reviewed key DGCA pilot ground school concepts today.\n\n"
+                    "Before you wrap up, would you like to test your understanding with a quick **DGCA Pariksha Practice Question**?\n\n"
+                    "- Click **\"🎯 Quick Pariksha Quiz\"** to test your knowledge on demand.\n"
+                    "- Or connect directly with our Chief Ground Instructor if you need further guidance.\n\n"
+                    "📖 **Referred Background Source:** DGCA Pilot Training Curriculum & Ground School Syllabus"
+                ),
+                "chips": ["🎯 Quick Pariksha Quiz", "Commercial Pilot Course (CPL)", "Class 1 & 2 Medicals", "Talk to Counselor"],
+                "escalation": default_escalation,
+                "under_the_hood": {
+                    "matched": True,
+                    "confidence_score": 100.0,
+                    "retrieval_method": "End of Study Session Assessment Trigger",
+                    "primary_book": "Airborne Ground School Curriculum",
+                    "page_number": 1,
+                    "subject": "Session Wrap-up & Self Assessment Option",
+                    "syllabus_breadcrumb": "DGCA CAR Sec 7 > Pilot Training Milestone",
+                    "recommended_next": "Interactive Pariksha Quiz Evaluation",
+                    "chunk_excerpt": "Student completed query cycle; offered optional Pariksha CBT assessment."
+                },
+                "agent_handled": "SessionWrapUpAgent"
             }
 
         # 5. Pure Greeting (Word-bounded regex, <= 3 words)

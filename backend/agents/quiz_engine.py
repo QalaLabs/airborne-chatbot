@@ -114,10 +114,52 @@ class DGCAQuizEngine:
     DGCA Pariksha Practice Quiz Engine (EduBot Interactive Learning Pattern).
     Attaches context-aware CBT multiple-choice self-assessment questions to
     theoretical explanations and evaluates cadet responses.
+    Activated on-demand or at the end of a session.
     """
     def __init__(self, bank: List[Dict[str, Any]] = DGCA_QUIZ_BANK):
         self.bank = bank
         self.last_quiz: Optional[Dict[str, Any]] = None
+
+    def is_on_demand_quiz_request(self, message: str) -> bool:
+        """Detects if user explicitly requests a quiz, test, or practice question"""
+        lower = message.strip().lower()
+        patterns = [
+            r'\b(quiz\s*me|test\s*me|practice\s*quiz|practice\s*question|dgca\s*quiz|cbt\s*quiz|start\s*quiz|pariksha\s*quiz|test\s*my\s*knowledge)\b',
+            r'\b(give|ask|send)\s*(?:me\s*)?(?:a\s*)?(?:quiz|question|test)\b',
+            r'\b(quick\s*pariksha\s*quiz|quiz\s*on\s*this\s*topic|another\s*question|next\s*question)\b'
+        ]
+        return any(re.search(p, lower) for p in patterns)
+
+    def serve_quiz_for_query(self, query: str, subject: Optional[str] = None) -> Dict[str, Any]:
+        """Serves an on-demand practice question based on user context or requested subject"""
+        is_generic = any(w in query.lower() for w in ["quiz me", "quick", "this topic", "test me", "start quiz", "give me a quiz", "test my knowledge", "pariksha quiz"])
+        if is_generic and self.last_quiz:
+            quiz = self.last_quiz
+        else:
+            quiz = self.match_quiz_for_query(query, subject) or self.last_quiz or self.bank[0]
+            self.last_quiz = quiz
+
+        quiz_md = (
+            f"### 🎯 **DGCA Pariksha Practice Assessment**\n\n"
+            f"**Subject:** *{quiz['subject']}*\n\n"
+            f"**Question:**\n"
+            f"**{quiz['question']}**\n\n"
+        )
+        for opt in quiz["options"]:
+            quiz_md += f"- {opt}\n"
+        quiz_md += (
+            f"\n*(Click an option below or type your choice to test your knowledge!)*\n\n"
+            f"📖 **Referred Background Source Book:** {quiz['source']}"
+        )
+        chips = [
+            f"Option {opt[0]}: {opt[3:30]}..." if len(opt) > 35 else f"Option {opt[0]}: {opt[3:]}"
+            for opt in quiz["options"]
+        ]
+        return {
+            "answer": quiz_md,
+            "chips": chips,
+            "quiz": quiz
+        }
 
     def match_quiz_for_query(self, query: str, subject: Optional[str] = None) -> Optional[Dict[str, Any]]:
         lower = query.lower()

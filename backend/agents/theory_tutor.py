@@ -11,15 +11,27 @@ from backend.agents.quiz_engine import quiz_engine
 DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
 
+def clean_textbook_text(raw_text: str) -> str:
+    """Cleans OCR page headers and chapter labels while preserving theoretical explanation"""
+    import re
+    text = re.sub(r'^\s*\d+\s*\n+', '', raw_text)
+    text = re.sub(r'^\s*Chapter\s+\d+[\s\w\(\)]*\n+', '', text, flags=re.I)
+    cleaned = text.strip()
+    return cleaned
+
 class TheoryTutorAgent:
     """
     Autonomous subagent specialized in resolving DGCA Ground School theoretical doubts
     across Air Navigation, Aviation Meteorology, Air Regulations, Technical General,
     and Radio Telephony.
-    Integrates RAPTOR tree retrieval, syllabus breadcrumbs, and interactive Pariksha quizzes.
+    Integrates RAPTOR tree retrieval and concise textbook citations.
+    Testing Agent is activated on-demand or at end-of-session.
     """
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY", DEFAULT_GEMINI_KEY)
+        self.last_subject: Optional[str] = None
+        self.last_book: Optional[str] = None
+        self.last_page: Optional[int] = None
 
     def generate_with_gemini(self, question: str, context_chunks: List[Dict[str, Any]], persona: StudentPersona) -> Optional[str]:
         api_key = os.environ.get("GEMINI_API_KEY", self.api_key)
@@ -43,9 +55,10 @@ class TheoryTutorAgent:
             "You are the Senior Flight Ground Instructor at Airborne Aviation Academy (DGCA Approved Pilot Training Institute).\n"
             f"Target Student Persona: {persona_guidance}\n\n"
             "Explain the student's doubt thoroughly, accurately, and professionally based strictly on the provided verified DGCA textbook excerpts.\n"
+            "Keep the response concise, direct, and focused strictly on answering the query (2 to 3 concise paragraphs or bullet points). Do NOT output unrequested quiz questions, practice exams, or lengthy preambles.\n"
             "You MUST state at the beginning: '📖 **Referred Background Source Book:** [Book Title], Page [Number] ([Subject])'.\n"
             "Always cite textbook titles and page numbers in bold (e.g. **Oxford Aviation Academy: Meteorology, Page 135**).\n"
-            "Use clear markdown headings, bullet points, and formulas where applicable."
+            "End with: '📚 **Referenced DGCA Textbooks:** [Book Title] (Page [Number])'."
         )
 
         user_prompt = f"{system_instruction}\n\nStudent Question: {question}\n\nVerified DGCA Textbook Excerpts:\n{formatted_context}"
@@ -104,31 +117,23 @@ class TheoryTutorAgent:
         subj_cluster = raptor_engine.resolve_subject_cluster(message) or top_chunk["subject"]
         breadcrumb_info = raptor_engine.get_syllabus_breadcrumb(subj_cluster)
 
-        # Check for interactive DGCA practice quiz
-        quiz = quiz_engine.match_quiz_for_query(message, top_chunk["subject"])
-        default_chips = ["Explain Further", "Related DGCA Question", "Connect with Ground Instructor", "CPL Course Details"]
-        quiz_chips = []
-        quiz_block = ""
-        if quiz:
-            quiz_block = (
-                f"\n\n---\n#### 🎯 **DGCA Pariksha Practice Question:**\n"
-                f"**{quiz['question']}**\n\n"
-            )
-            for opt in quiz["options"]:
-                quiz_block += f"- {opt}\n"
-            quiz_block += "\n*(Click an option below to test your understanding!)*"
-            quiz_chips = [
-                f"Option {opt[0]}: {opt[3:30]}..." if len(opt) > 35 else f"Option {opt[0]}: {opt[3:]}"
-                for opt in quiz["options"]
-            ]
+        self.last_subject = top_chunk["subject"]
+        self.last_book = top_chunk["book_title"]
+        self.last_page = top_chunk["page_number"]
+
+        # Cache context-matching quiz for on-demand testing if student asks to be quizzed
+        matched_quiz = quiz_engine.match_quiz_for_query(message, top_chunk["subject"])
+        if matched_quiz:
+            quiz_engine.last_quiz = matched_quiz
+
+        default_chips = ["Explain Further", "🎯 Quiz Me on this Topic", "CPL Ground School", "Class 1 & 2 Medicals"]
 
         # Try Gemini LLM generation if key is configured
         gemini_ans = self.generate_with_gemini(message, rag_results, persona)
         if gemini_ans:
-            full_ans = gemini_ans + quiz_block
             return {
-                "answer": full_ans,
-                "chips": quiz_chips if quiz_chips else default_chips,
+                "answer": gemini_ans,
+                "chips": default_chips,
                 "under_the_hood": {
                     "matched": True,
                     "confidence_score": confidence,
@@ -142,16 +147,8 @@ class TheoryTutorAgent:
                 }
             }
 
-        # Offline Curated Structured Response Card
-        sources_md = []
-        citations = []
-        for r in rag_results:
-            source_tag = f"**{r['book_title']}** (Page {r['page_number']}) — *{r['subject']}*"
-            citations.append(source_tag)
-            clean_snippet = r['text'].strip()
-            if len(clean_snippet) > 380:
-                clean_snippet = clean_snippet[:380] + "..."
-            sources_md.append(f"> 📖 **{r['book_title']} [p. {r['page_number']}]**:\n> \"{clean_snippet}\"")
+        # Offline Curated Concise Theoretical Card
+        cleaned_text = clean_textbook_text(top_chunk["text"])
 
         # Persona-tailored preamble
         persona_note = ""
@@ -164,19 +161,20 @@ class TheoryTutorAgent:
             f"### ✈️ **DGCA Textbook Doubt Resolution**\n\n"
             f"📖 **Referred Background Source Book:** **{top_chunk['book_title']}** (Page {top_chunk['page_number']}) — *Subject: {top_chunk['subject']}*\n\n"
             f"{persona_note}"
-            f"Here is the verified theoretical explanation from the official **DGCA Aviation Syllabus & Curriculum**:\n\n"
-            f"{top_chunk['text'].strip()}\n\n"
+            f"{cleaned_text}\n"
         )
 
         if len(rag_results) > 1:
-            answer_body += "#### 🔍 Additional Technical References:\n" + "\n\n".join(sources_md[1:]) + "\n\n"
+            clean_sec = clean_textbook_text(rag_results[1]["text"])
+            if len(clean_sec) > 300:
+                clean_sec = clean_sec[:300].rsplit(".", 1)[0] + "."
+            answer_body += f"\n**Technical Reference ({rag_results[1]['book_title']}, p. {rag_results[1]['page_number']}):**\n{clean_sec}\n"
 
-        answer_body += "📚 **Referenced DGCA Textbooks:**\n" + "\n".join([f"- {c}" for c in citations])
-        answer_body += quiz_block
+        answer_body += f"\n📚 **Referenced DGCA Textbooks:** **{top_chunk['book_title']}** (Page {top_chunk['page_number']}) — *{top_chunk['subject']}*"
 
         return {
             "answer": answer_body,
-            "chips": quiz_chips if quiz_chips else default_chips,
+            "chips": default_chips,
             "under_the_hood": {
                 "matched": True,
                 "confidence_score": confidence,
