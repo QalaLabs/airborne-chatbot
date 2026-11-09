@@ -228,6 +228,8 @@
       "TheoryTutorAgent": "DGCA Theory Ground Tutor",
       "AdmissionsAdvisorAgent": "Admissions & Loan Advisor",
       "RegulatoryVerifierAgent": "DGCA Regulatory Verifier",
+      "AviationSQLRAG": "Aviation SQL-RAG Engine",
+      "DGCAQuizEngine": "DGCA Pariksha Practice Quiz",
       "SecurityGuardrail": "Airborne Security Guardrail",
       "ScopeGuardrail": "Aviation Scope Guardrail",
       "OnboardingRouter": "Flight Onboarding Desk"
@@ -322,7 +324,6 @@
   async function sendHeartbeat() {
     if (!isOpen || isCapped) return;
     const now = Date.now();
-    // Only charge time if student was active in last 45 seconds
     if (now - lastUserActivity > 45000) return;
 
     try {
@@ -362,7 +363,6 @@
     if (!md) return "";
     let html = md;
     
-    // Escape HTML tags to prevent XSS
     html = html.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
     // Markdown tables
@@ -393,6 +393,9 @@
 
     // Ordered points
     html = html.replace(/^\d+\. (.*$)/gim, "<li>$1</li>");
+
+    // Horizontal rule
+    html = html.replace(/^---$/gim, "<hr style='border:none;border-top:1px solid #e2e8f0;margin:10px 0;'>");
 
     // Links [text](url)
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" style="color:#2563eb;text-decoration:underline;">$1</a>');
@@ -437,6 +440,8 @@
           <div class="airborne-uth-drawer">
             <div class="airborne-uth-row"><strong>📖 Background Source:</strong> <span>${escapeHtml(underTheHood.primary_book || 'DGCA Syllabus')} (p. ${underTheHood.page_number || '1'})</span></div>
             <div class="airborne-uth-row"><strong>🎯 Subject:</strong> <span>${escapeHtml(underTheHood.subject || 'Ground School')}</span></div>
+            ${underTheHood.syllabus_breadcrumb ? `<div class="airborne-uth-row"><strong>📍 Syllabus Path:</strong> <span>${escapeHtml(underTheHood.syllabus_breadcrumb)}</span></div>` : ''}
+            ${underTheHood.recommended_next ? `<div class="airborne-uth-row"><strong>🚀 Next Recommended:</strong> <span>${escapeHtml(underTheHood.recommended_next)}</span></div>` : ''}
             <div class="airborne-uth-row"><strong>🔍 Method:</strong> <span>${escapeHtml(underTheHood.retrieval_method || 'RAG Search')}</span></div>
             <div class="airborne-uth-row"><strong>📑 Extracted Chunk Excerpt:</strong>
               <div class="airborne-uth-chunk">${escapeHtml(underTheHood.chunk_excerpt || '')}</div>

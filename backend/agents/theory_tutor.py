@@ -6,6 +6,7 @@ from typing import Dict, Any, List, Optional
 from backend.rag_pipeline import rag_pipeline
 from backend.models.student_profile import StudentPersona
 from backend.raptor_module import raptor_engine
+from backend.agents.quiz_engine import quiz_engine
 
 DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
@@ -15,6 +16,7 @@ class TheoryTutorAgent:
     Autonomous subagent specialized in resolving DGCA Ground School theoretical doubts
     across Air Navigation, Aviation Meteorology, Air Regulations, Technical General,
     and Radio Telephony.
+    Integrates RAPTOR tree retrieval, syllabus breadcrumbs, and interactive Pariksha quizzes.
     """
     def __init__(self, api_key: Optional[str] = None):
         self.api_key = api_key or os.environ.get("GEMINI_API_KEY", DEFAULT_GEMINI_KEY)
@@ -73,7 +75,7 @@ class TheoryTutorAgent:
     def answer_theory_query(self, message: str, persona: StudentPersona = StudentPersona.GROUND_SCHOOL_CADET) -> Dict[str, Any]:
         """
         Retrieves verified textbook chunks and synthesizes an authoritative response
-        complete with 'under_the_hood' metadata and mandatory source citation.
+        complete with 'under_the_hood' metadata, syllabus breadcrumbs, and DGCA practice quiz.
         """
         rag_results = rag_pipeline.search(message, top_k=3)
 
@@ -97,23 +99,45 @@ class TheoryTutorAgent:
             }
 
         top_chunk = rag_results[0]
-        # Calculate an intuitive confidence score based on BM25 rank score
         raw_score = top_chunk.get("score", 15.0)
         confidence = min(99.4, round(70.0 + min(29.0, raw_score * 1.5), 1))
+        subj_cluster = raptor_engine.resolve_subject_cluster(message) or top_chunk["subject"]
+        breadcrumb_info = raptor_engine.get_syllabus_breadcrumb(subj_cluster)
+
+        # Check for interactive DGCA practice quiz
+        quiz = quiz_engine.match_quiz_for_query(message, top_chunk["subject"])
+        default_chips = ["Explain Further", "Related DGCA Question", "Connect with Ground Instructor", "CPL Course Details"]
+        quiz_chips = []
+        quiz_block = ""
+        if quiz:
+            quiz_block = (
+                f"\n\n---\n#### 🎯 **DGCA Pariksha Practice Question:**\n"
+                f"**{quiz['question']}**\n\n"
+            )
+            for opt in quiz["options"]:
+                quiz_block += f"- {opt}\n"
+            quiz_block += "\n*(Click an option below to test your understanding!)*"
+            quiz_chips = [
+                f"Option {opt[0]}: {opt[3:30]}..." if len(opt) > 35 else f"Option {opt[0]}: {opt[3:]}"
+                for opt in quiz["options"]
+            ]
 
         # Try Gemini LLM generation if key is configured
         gemini_ans = self.generate_with_gemini(message, rag_results, persona)
         if gemini_ans:
+            full_ans = gemini_ans + quiz_block
             return {
-                "answer": gemini_ans,
-                "chips": ["Explain Further", "Related DGCA Question", "Connect with Ground Instructor", "Pariksha CBT Syllabus"],
+                "answer": full_ans,
+                "chips": quiz_chips if quiz_chips else default_chips,
                 "under_the_hood": {
                     "matched": True,
                     "confidence_score": confidence,
-                    "retrieval_method": "RAPTOR / FTS5 Hybrid + Gemini Flash Synthesis",
+                    "retrieval_method": f"RAPTOR Hierarchical Tree ({subj_cluster}) + Gemini Flash",
                     "primary_book": top_chunk["book_title"],
                     "page_number": top_chunk["page_number"],
                     "subject": top_chunk["subject"],
+                    "syllabus_breadcrumb": breadcrumb_info["breadcrumb"],
+                    "recommended_next": breadcrumb_info["recommended_next"],
                     "chunk_excerpt": top_chunk["text"][:300].strip() + "..."
                 }
             }
@@ -148,11 +172,11 @@ class TheoryTutorAgent:
             answer_body += "#### 🔍 Additional Technical References:\n" + "\n\n".join(sources_md[1:]) + "\n\n"
 
         answer_body += "📚 **Referenced DGCA Textbooks:**\n" + "\n".join([f"- {c}" for c in citations])
+        answer_body += quiz_block
 
-        subj_cluster = raptor_engine.resolve_subject_cluster(message) or top_chunk["subject"]
         return {
             "answer": answer_body,
-            "chips": ["Explain Further", "Related DGCA Question", "Connect with Ground Instructor", "CPL Course Details"],
+            "chips": quiz_chips if quiz_chips else default_chips,
             "under_the_hood": {
                 "matched": True,
                 "confidence_score": confidence,
@@ -160,6 +184,8 @@ class TheoryTutorAgent:
                 "primary_book": top_chunk["book_title"],
                 "page_number": top_chunk["page_number"],
                 "subject": top_chunk["subject"],
+                "syllabus_breadcrumb": breadcrumb_info["breadcrumb"],
+                "recommended_next": breadcrumb_info["recommended_next"],
                 "chunk_excerpt": top_chunk["text"][:300].strip() + "..."
             }
         }

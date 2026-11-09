@@ -12,6 +12,8 @@ DB_PATH = Path("data/aviation_rag.db")
 SUBJECT_TOPIC_TAXONOMY = {
     "Principles of Flight": {
         "title": "Principles of Flight & Aerodynamics",
+        "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 024 (Principles of Flight)",
+        "recommended_next": "Boundary Layer Separation & Stalling Recovery",
         "topics": [
             "Lift, Drag & Aerofoil Characteristics",
             "Stalling, Angle of Attack & Boundary Layer Control",
@@ -23,6 +25,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "Aviation Meteorology": {
         "title": "Aviation Meteorology & Weather Hazards",
+        "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 022 (Aviation Meteorology)",
+        "recommended_next": "Upper-Level Jet Streams & Clear Air Turbulence (CAT)",
         "topics": [
             "Altimetry, Atmospheric Pressure & QNH/QFE/QNE Settings",
             "Lapse Rates, Atmospheric Stability & Inversions",
@@ -35,6 +39,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "Indian Meteorology": {
         "title": "Indian Climatology & Regional Aviation Weather",
+        "syllabus_code": "DGCA CAR Sec 7 > Subject 022 Annexure (Indian Climatology)",
+        "recommended_next": "Southwest Monsoon Onset & Tropical Easterly Jet",
         "topics": [
             "Southwest Monsoon Mechanism & Tropical Easterly Jet",
             "Western Disturbances, Winter Fog & Snowfall",
@@ -45,6 +51,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "Air Regulations": {
         "title": "Air Regulations & Rules of the Air",
+        "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 023 (Air Regulations)",
+        "recommended_next": "Visual Flight Rules (VFR) & Instrument Flight Rules (IFR) Minima",
         "topics": [
             "Rules of the Air (Right of Way, Head-On & Converging)",
             "Semi-Circular Cruising Altitude System",
@@ -57,6 +65,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "General Navigation": {
         "title": "General Navigation & Flight Planning",
+        "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 021 (Air Navigation)",
+        "recommended_next": "Critical Point / Point of Equal Time (PET) Formulations",
         "topics": [
             "Great Circles, Rhumb Lines & Mercator/Lambert Projections",
             "Earth Convergence & Conversion Angle",
@@ -68,6 +78,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "Radio Navigation": {
         "title": "Radio Navigation Aids & Radar Systems",
+        "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 021 Part B (Radio Navigation)",
+        "recommended_next": "Instrument Landing System (ILS) Localizer & Glide Path",
         "topics": [
             "VOR (VHF Omnidirectional Range) & Radial Tracking",
             "DME (Distance Measuring Equipment) & Slant Range Geometry",
@@ -80,6 +92,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "Aircraft Systems & Electrics": {
         "title": "Aircraft Systems, Hydraulics & Electrical Infrastructure",
+        "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 024 Part B (Aircraft Systems)",
+        "recommended_next": "Fly-by-Wire Flight Control Redundancy & Actuators",
         "topics": [
             "Fly-by-Wire Flight Control Systems & Hydraulic Actuators",
             "Hydraulic Accumulators & Nitrogen Pre-charge Functions",
@@ -89,6 +103,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "Powerplant": {
         "title": "Aircraft Powerplants & Propulsion Systems",
+        "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 024 Part C (Aero Engines)",
+        "recommended_next": "Gas Turbine Turbofan Bypass Ratios & FADEC Controls",
         "topics": [
             "Piston Engine Carburetor Icing & Induction Heating",
             "Aero-Engine Independent Magneto Dual Ignition Systems",
@@ -98,6 +114,8 @@ SUBJECT_TOPIC_TAXONOMY = {
     },
     "Radio Telephony": {
         "title": "Radio Telephony Restricted (Aeronautical) & Phraseology",
+        "syllabus_code": "Ministry of Communications & WPC > RTR(A) COP Syllabus",
+        "recommended_next": "Emergency Distress (MAYDAY) & Urgency (PAN PAN) Transmissions",
         "topics": [
             "Distress Communications (MAYDAY) Format & Procedures",
             "Urgency Communications (PAN PAN) Protocol",
@@ -136,12 +154,11 @@ class RaptorHierarchicalEngine:
         """Constructs and serializes the RAPTOR tree representation"""
         tree = {
             "root": "DGCA Commercial Pilot Training Ground Curriculum",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "total_levels": 3,
             "subjects": {}
         }
 
-        # Query chunk counts per subject from SQLite
         counts = {}
         if os.path.exists(self.db_path):
             try:
@@ -154,6 +171,8 @@ class RaptorHierarchicalEngine:
         for subj_key, meta in SUBJECT_TOPIC_TAXONOMY.items():
             tree["subjects"][subj_key] = {
                 "title": meta["title"],
+                "syllabus_code": meta.get("syllabus_code", ""),
+                "recommended_next": meta.get("recommended_next", ""),
                 "topics": meta["topics"],
                 "keywords": meta["keywords"],
                 "chunk_count": counts.get(subj_key, 0)
@@ -180,12 +199,12 @@ class RaptorHierarchicalEngine:
 
         return best_subj
 
-    def get_hierarchical_context(self, subject: str) -> Dict[str, Any]:
-        """Returns chapter topics and tree metadata for a given subject"""
-        return SUBJECT_TOPIC_TAXONOMY.get(subject, {
-            "title": subject,
-            "topics": ["General DGCA Theoretical Knowledge"],
-            "keywords": []
-        })
+    def get_syllabus_breadcrumb(self, subject: str) -> Dict[str, str]:
+        """Returns curriculum hierarchy and recommended next module"""
+        meta = SUBJECT_TOPIC_TAXONOMY.get(subject, {})
+        return {
+            "breadcrumb": meta.get("syllabus_code", f"DGCA CAR Section 7 > {subject}"),
+            "recommended_next": meta.get("recommended_next", "Comprehensive DGCA Pariksha Practice Examination")
+        }
 
 raptor_engine = RaptorHierarchicalEngine()

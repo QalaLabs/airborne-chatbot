@@ -223,11 +223,11 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 @app.get("/widget.js")
 def get_widget_js():
-    return FileResponse(str(STATIC_DIR / "widget.js", media_type="application/javascript")
+    return FileResponse(str(STATIC_DIR / "widget.js"), media_type="application/javascript")
 
 @app.get("/widget.css")
 def get_widget_css():
-    return FileResponse(str(STATIC_DIR / "widget.css", media_type="text/css")
+    return FileResponse(str(STATIC_DIR / "widget.css"), media_type="text/css")
 
 @app.get("/embed-demo")
 def embed_demo():

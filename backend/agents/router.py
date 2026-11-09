@@ -8,6 +8,8 @@ from backend.models.student_profile import StudentPersona
 from backend.agents.theory_tutor import TheoryTutorAgent
 from backend.agents.admissions_advisor import AdmissionsAdvisorAgent
 from backend.agents.regulatory_verifier import RegulatoryVerifierAgent
+from backend.agents.sql_rag import sql_rag
+from backend.agents.quiz_engine import quiz_engine
 
 DEFAULT_GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "")
 
@@ -34,7 +36,7 @@ AVIATION_TERMS = {
     "spectacles", "glasses", "fleet", "duration", "subjects", "passing", "marks", "exam",
     "exams", "syllabus", "cadet", "ground school", "fdtl", "logbook", "rule 67a", "rule 7",
     "computer number", "egca", "pariksha", "medical", "medicals", "class 1", "class 2",
-    "lasik", "vision", "eyesight", "afcme", "iam", "pmr", "rtr", "license",
+    "lasik", "vision", "eyesight", "afcme", "iam", "pmr", "rtr", "license", "quiz", "option",
     # Aerodynamics & Principles of Flight
     "aerodynamics", "lift", "drag", "thrust", "weight", "stall", "stalling", "angle of attack",
     "aoa", "camber", "cambered", "aerofoil", "airfoil", "chord", "span", "aspect ratio",
@@ -75,7 +77,9 @@ class IntentRouter:
     """
     Coordinating Router for EduBot Multi-Agent Architecture.
     Dispatches student pilot queries to:
-    - TheoryTutorAgent: DGCA 5 ground subjects, RAPTOR & textbook RAG
+    - TheoryTutorAgent: DGCA 5 ground subjects, RAPTOR & textbook RAG + Interactive Pariksha Quizzes
+    - AviationSQLRAG: Structured Text-to-SQL for exam tables, flying schedules, and course matrices
+    - DGCAQuizEngine: Immediate evaluation of student practice answers
     - AdmissionsAdvisorAgent: CPL courses, fee schedules, bank loans & WhatsApp escalation
     - RegulatoryVerifierAgent: eGCA, medical fitness, 200 flying hours, anti-fraud & official portal checks
     """
@@ -88,6 +92,8 @@ class IntentRouter:
         self.theory_tutor = TheoryTutorAgent(api_key=self.api_key)
         self.admissions_advisor = AdmissionsAdvisorAgent(kb=self.kb)
         self.regulatory_verifier = RegulatoryVerifierAgent(kb=self.kb)
+        self.sql_rag = sql_rag
+        self.quiz_engine = quiz_engine
 
     def is_complex_query(self, message: str) -> Tuple[bool, str]:
         """Detects if query requires counselor escalation."""
@@ -125,7 +131,7 @@ class IntentRouter:
         tokens = set(re.findall(r'\b[a-z0-9\-]+\b', message.lower()))
         if tokens & AVIATION_TERMS:
             return True
-        if any(w in message.lower() for w in ["pilot", "jahaj", "plane", "udaan", "cpl", "fees", "flight"]):
+        if any(w in message.lower() for w in ["pilot", "jahaj", "plane", "udaan", "cpl", "fees", "flight", "option a", "option b", "option c"]):
             return True
         return False
 
@@ -148,10 +154,11 @@ class IntentRouter:
 
     def route_and_process(self, message: str, persona: StudentPersona = StudentPersona.GROUND_SCHOOL_CADET) -> Dict[str, Any]:
         """
-        Coordinates the execution lifecycle across guardrails, regulatory checks,
-        admissions guidance, and textbook ground school RAG synthesis.
+        Coordinates the execution lifecycle across guardrails, interactive quizzes,
+        structured SQL-RAG, regulatory checks, admissions guidance, and textbook RAG.
         """
         text = message.strip()
+        lower = text.lower()
         is_complex, complex_reason = self.is_complex_query(text)
         default_escalation = self.generate_escalation_data(message, complex_reason) if is_complex else {
             "needed": False,
@@ -197,7 +204,39 @@ class IntentRouter:
             res["agent_handled"] = "RegulatoryVerifierAgent"
             return res
 
-        # 4. Pure Greeting (Word-bounded regex, <= 3 words)
+        # 4. Interactive DGCA Pariksha Quiz Answer Submission (EduBot Pattern)
+        quiz_eval = self.quiz_engine.is_quiz_answer_submission(text)
+        if quiz_eval:
+            status_emoji = "✅" if quiz_eval["is_correct"] else "❌"
+            status_text = "Correct Answer!" if quiz_eval["is_correct"] else f"Incorrect. The correct answer is Option {quiz_eval['correct_option']}."
+            quiz_resp = (
+                f"### 🎯 **DGCA Pariksha Practice Assessment**\n\n"
+                f"**Question:** *{quiz_eval['question']}*\n\n"
+                f"**Your Choice:** Option {quiz_eval['chosen']}\n\n"
+                f"{status_emoji} **{status_text}**\n\n"
+                f"#### 📖 **Theoretical Explanation:**\n"
+                f"{quiz_eval['explanation']}\n\n"
+                f"📖 **Referred Background Source Book:** {quiz_eval['source']}"
+            )
+            return {
+                "answer": quiz_resp,
+                "chips": ["Try Another Question", "DGCA 5 Subjects", "CPL Ground School", "Class 1 & 2 Medicals"],
+                "escalation": default_escalation,
+                "under_the_hood": {
+                    "matched": True,
+                    "confidence_score": 100.0,
+                    "retrieval_method": "DGCA Pariksha Interactive Assessment Evaluator",
+                    "primary_book": quiz_eval["source"].split(":")[0] if ":" in quiz_eval["source"] else quiz_eval["source"],
+                    "page_number": 1,
+                    "subject": "Pariksha Exam Practice & Self-Assessment",
+                    "syllabus_breadcrumb": "DGCA CAR Section 7 > Pariksha CBT Question Bank",
+                    "recommended_next": "Next Theoretical Subject Review",
+                    "chunk_excerpt": quiz_eval["explanation"]
+                },
+                "agent_handled": "DGCAQuizEngine"
+            }
+
+        # 5. Pure Greeting (Word-bounded regex, <= 3 words)
         is_greeting = bool(re.match(r'^(hi|hello|hey|namaste|good\s+morning|good\s+evening|start)\b', text, re.I)) and len(text.split()) <= 3
         if is_greeting:
             response_text = (
@@ -233,7 +272,65 @@ class IntentRouter:
                 "agent_handled": "OnboardingRouter"
             }
 
-        # 5. Regulatory & Institutional Verification (Medicals, eGCA, 200 Flying Hours, NIOS, Age, Exams)
+        # 6. Structured SQL-RAG: Tabular & Comparative Queries (EduBot SQL-RAG Pattern)
+        if any(w in lower for w in ["compare", "comparison"]) and any(w in lower for w in ["course", "courses", "cpl", "cadet", "fleet", "program"]):
+            return {
+                "answer": self.sql_rag.query_course_comparison(),
+                "chips": ["CPL Total Cost", "Cadet Pilot Costs", "100% Bank Loans", "Talk to Admissions Counselor"],
+                "escalation": default_escalation,
+                "under_the_hood": {
+                    "matched": True,
+                    "confidence_score": 99.8,
+                    "retrieval_method": "SQL-RAG (course_fees_installments Table)",
+                    "primary_book": "Airborne Aviation Course Specification Database",
+                    "page_number": 1,
+                    "subject": "Flight Training Course Comparison Matrix",
+                    "syllabus_breadcrumb": "Airborne Academy > Program Matrix",
+                    "recommended_next": "Personalized Installment Counseling",
+                    "chunk_excerpt": "Structured SQL table query comparing CPL, Cadet, Ground School, RTR, and Conversion courses."
+                },
+                "agent_handled": "AviationSQLRAG"
+            }
+
+        if any(w in lower for w in ["exam table", "exams table", "passing table", "subject code table", "cbt table"]):
+            return {
+                "answer": self.sql_rag.query_exams_table(),
+                "chips": ["DGCA 5 Subjects", "Pariksha Exam Dates", "Computer Number Steps", "Ground School Fees"],
+                "escalation": default_escalation,
+                "under_the_hood": {
+                    "matched": True,
+                    "confidence_score": 99.9,
+                    "retrieval_method": "SQL-RAG (dgca_exams Table)",
+                    "primary_book": "DGCA CAR Section 7 Series J",
+                    "page_number": 1,
+                    "subject": "DGCA Theoretical Knowledge Examinations",
+                    "syllabus_breadcrumb": "DGCA CAR Section 7 > Pariksha Exam Matrix",
+                    "recommended_next": "Registration on pariksha.dgca.gov.in",
+                    "chunk_excerpt": "Structured SQL query of official exam codes (021-025, WPC) with 70% passing standards."
+                },
+                "agent_handled": "AviationSQLRAG"
+            }
+
+        if any(w in lower for w in ["flying schedule", "flying hours table", "flying breakdown table", "hours schedule", "statutory hours"]):
+            return {
+                "answer": self.sql_rag.query_flying_hours_table(),
+                "chips": ["CPL Course Details", "Class 1 & 2 Medicals", "Total Course Cost", "Admissions Help"],
+                "escalation": default_escalation,
+                "under_the_hood": {
+                    "matched": True,
+                    "confidence_score": 99.9,
+                    "retrieval_method": "SQL-RAG (flying_hours_schedule Table)",
+                    "primary_book": "DGCA Aircraft Rules 1937 Schedule II Section J",
+                    "page_number": 190,
+                    "subject": "Commercial Pilot License Flight Requirements",
+                    "syllabus_breadcrumb": "DGCA Aircraft Rules 1937 > Schedule II Section J",
+                    "recommended_next": "Flight Simulator FNPT-II Training Schedule",
+                    "chunk_excerpt": "Structured SQL query of statutory 200 flying hours breakdown."
+                },
+                "agent_handled": "AviationSQLRAG"
+            }
+
+        # 7. Regulatory & Institutional Verification (Medicals, eGCA, 200 Flying Hours, NIOS, Age, Exams)
         reg_result = self.regulatory_verifier.answer_regulatory_query(text, persona)
         if reg_result:
             if "escalation" not in reg_result or not reg_result["escalation"].get("needed"):
@@ -241,7 +338,7 @@ class IntentRouter:
             reg_result["agent_handled"] = "RegulatoryVerifierAgent"
             return reg_result
 
-        # 6. Admissions, Fleet, Course Specifications & Bank Loans
+        # 8. Admissions, Fleet, Course Specifications & Bank Loans
         adm_result = self.admissions_advisor.answer_admissions_query(text, persona)
         if adm_result:
             if "escalation" not in adm_result or not adm_result["escalation"].get("needed"):
@@ -249,7 +346,7 @@ class IntentRouter:
             adm_result["agent_handled"] = "AdmissionsAdvisorAgent"
             return adm_result
 
-        # 7. Out-of-Domain Guardrail (Reject non-aviation questions: recipes, coding, stocks)
+        # 9. Out-of-Domain Guardrail (Reject non-aviation questions: recipes, coding, stocks)
         if not self.is_aviation_query(text) and not is_complex:
             return {
                 "answer": (
@@ -277,14 +374,14 @@ class IntentRouter:
                 "agent_handled": "ScopeGuardrail"
             }
 
-        # 8. Theory Tutor Agent (DGCA Ground School Textbook RAG)
+        # 10. Theory Tutor Agent (DGCA Ground School Textbook RAG + Pariksha Practice Quiz)
         theory_result = self.theory_tutor.answer_theory_query(text, persona)
         if theory_result.get("under_the_hood", {}).get("matched", False):
             theory_result["escalation"] = default_escalation
             theory_result["agent_handled"] = "TheoryTutorAgent"
             return theory_result
 
-        # 9. Fallback for unindexed general aviation queries
+        # 11. Fallback for unindexed general aviation queries
         default_escalation["needed"] = True
         default_escalation["reason"] = "Aviation advisor ready to answer your specific flight question"
         response_text = (
