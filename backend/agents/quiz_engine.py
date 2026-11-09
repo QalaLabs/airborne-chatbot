@@ -63,6 +63,21 @@ DGCA_QUIZ_BANK = [
         "source": "General Navigation: Oxford Aviation Academy (Page 84)"
     },
     {
+        "id": "nav_kepler_perihelion",
+        "subject": "General Navigation",
+        "keywords": ["perihelion", "aphelion", "kepler", "orbit", "earth orbit", "elliptical orbit"],
+        "question": "When does perihelion occur, and what is the relative orbital speed of Earth at this point?",
+        "options": [
+            "A) Early January (~Jan 3-4); orbital speed is fastest",
+            "B) Early July (~July 3-4); orbital speed is slowest",
+            "C) Mid March at spring equinox; orbital speed is constant",
+            "D) Late June at summer solstice; orbital speed is slowest"
+        ],
+        "correct_option": "A",
+        "explanation": "Under Kepler's First and Second Laws, Earth travels in an elliptical orbit around the Sun. At 'perihelion' (closest distance to the Sun, approx 147 million km), which occurs in early January (~Jan 3-4), the radius vector is shortest and the orbital speed is fastest. At 'aphelion' (furthest distance, early July), orbital speed is slowest.",
+        "source": "Air Navigation: General Navigation (Page 416, Chapter 25: Time)"
+    },
+    {
         "id": "pwr_carb_icing",
         "subject": "Powerplant",
         "keywords": ["carburetor", "carburettor", "carb heat", "ice", "rpm"],
@@ -102,6 +117,7 @@ class DGCAQuizEngine:
     """
     def __init__(self, bank: List[Dict[str, Any]] = DGCA_QUIZ_BANK):
         self.bank = bank
+        self.last_quiz: Optional[Dict[str, Any]] = None
 
     def match_quiz_for_query(self, query: str, subject: Optional[str] = None) -> Optional[Dict[str, Any]]:
         lower = query.lower()
@@ -117,6 +133,8 @@ class DGCAQuizEngine:
                 max_score = score
                 best_quiz = q
 
+        if best_quiz:
+            self.last_quiz = best_quiz
         return best_quiz
 
     def is_quiz_answer_submission(self, message: str) -> Optional[Dict[str, Any]]:
@@ -128,21 +146,34 @@ class DGCAQuizEngine:
             return None
 
         chosen_letter = m.group(1).upper()
-        # Find which quiz question matches the rest of the text
-        for q in self.bank:
-            for opt in q["options"]:
-                if opt.upper().startswith(chosen_letter) or any(k in lower for k in q["keywords"]):
-                    is_correct = (chosen_letter == q["correct_option"])
-                    return {
-                        "is_submission": True,
-                        "chosen": chosen_letter,
-                        "is_correct": is_correct,
-                        "question": q["question"],
-                        "correct_option": q["correct_option"],
-                        "explanation": q["explanation"],
-                        "source": q["source"]
-                    }
 
-        return None
+        # 1. Check if specific keywords or option text match any quiz in the bank
+        matching_quiz = None
+        for q in self.bank:
+            if any(k in lower for k in q["keywords"]):
+                matching_quiz = q
+                break
+            for opt in q["options"]:
+                opt_snippet = opt[3:].strip().lower()
+                if len(opt_snippet) > 4 and opt_snippet[:15] in lower:
+                    matching_quiz = q
+                    break
+            if matching_quiz:
+                break
+
+        # 2. Fall back to the most recently asked quiz if available
+        if not matching_quiz:
+            matching_quiz = self.last_quiz or self.bank[0]
+
+        is_correct = (chosen_letter == matching_quiz["correct_option"])
+        return {
+            "is_submission": True,
+            "chosen": chosen_letter,
+            "is_correct": is_correct,
+            "question": matching_quiz["question"],
+            "correct_option": matching_quiz["correct_option"],
+            "explanation": matching_quiz["explanation"],
+            "source": matching_quiz["source"]
+        }
 
 quiz_engine = DGCAQuizEngine()

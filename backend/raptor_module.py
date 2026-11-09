@@ -66,15 +66,16 @@ SUBJECT_TOPIC_TAXONOMY = {
     "General Navigation": {
         "title": "General Navigation & Flight Planning",
         "syllabus_code": "DGCA CAR Sec 7 > Ground Subject 021 (Air Navigation)",
-        "recommended_next": "Critical Point / Point of Equal Time (PET) Formulations",
+        "recommended_next": "Earth Orbit, Kepler's Laws & Time Formulations",
         "topics": [
+            "Solar System, Earth Orbit, Kepler's Laws, Perihelion & Aphelion",
             "Great Circles, Rhumb Lines & Mercator/Lambert Projections",
             "Earth Convergence & Conversion Angle",
             "Airspeeds (IAS, CAS, EAS, TAS) & Density Corrections",
             "1 in 60 Rule, Track Errors & Wind Triangle Calculations",
             "Critical Point / Point of Equal Time (PET) & Point of Safe Return (PSR)"
         ],
-        "keywords": ["great circle", "rhumb line", "convergence", "conversion angle", "true airspeed", "tas", "ias", "cas", "1 in 60", "point of equal time", "point of safe return", "psr", "pet"]
+        "keywords": ["great circle", "rhumb line", "convergence", "conversion angle", "true airspeed", "tas", "ias", "cas", "1 in 60", "point of equal time", "point of safe return", "psr", "pet", "perihelion", "aphelion", "kepler", "orbit", "solstice", "equinox", "sidereal", "time"]
     },
     "Radio Navigation": {
         "title": "Radio Navigation Aids & Radar Systems",

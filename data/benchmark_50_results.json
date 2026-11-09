@@ -3,7 +3,7 @@
   "passed": 50,
   "failed": 0,
   "pass_rate": 100.0,
-  "total_time_seconds": 1.25,
+  "total_time_seconds": 1.41,
   "failures": [],
   "details": [
     {
@@ -20,7 +20,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 17.59,
+      "latency_ms": 27.67,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 205) \u2014 *Subje"
     },
     {
@@ -36,7 +36,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 50.06,
+      "latency_ms": 113.32,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 119) \u2014 *Subje"
     },
     {
@@ -53,7 +53,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 11.95,
+      "latency_ms": 17.36,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 353) \u2014 *Subje"
     },
     {
@@ -68,7 +68,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 33.09,
+      "latency_ms": 42.31,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 108) \u2014 *Subje"
     },
     {
@@ -84,7 +84,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 22.7,
+      "latency_ms": 37.5,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 65) \u2014 *Subjec"
     },
     {
@@ -101,7 +101,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 17.78,
+      "latency_ms": 16.04,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 322) \u2014 *Subje"
     },
     {
@@ -118,7 +118,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 29.22,
+      "latency_ms": 40.08,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 429) \u2014 *Subje"
     },
     {
@@ -133,7 +133,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 17.37,
+      "latency_ms": 19.3,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 123) \u2014 *Subje"
     },
     {
@@ -150,7 +150,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 20.74,
+      "latency_ms": 22.99,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Aircraft Instrumentation** (Page 70) \u2014 *Subject: Instrumenta"
     },
     {
@@ -167,7 +167,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 12.96,
+      "latency_ms": 15.5,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 93) \u2014 *Subject: Aviation Meteor"
     },
     {
@@ -184,7 +184,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 22.13,
+      "latency_ms": 24.97,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 159) \u2014 *Subject: Aviation Meteo"
     },
     {
@@ -200,7 +200,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 9.34,
+      "latency_ms": 11.33,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 115) \u2014 *Subject: Aviation Meteo"
     },
     {
@@ -215,7 +215,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 12.57,
+      "latency_ms": 13.38,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 285) \u2014 *Subject: Aviation Meteo"
     },
     {
@@ -231,7 +231,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 39.36,
+      "latency_ms": 42.15,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 114) \u2014 *Subject: Aviation Meteo"
     },
     {
@@ -247,7 +247,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 14.88,
+      "latency_ms": 17.34,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 113) \u2014 *Subject: Aviation Meteo"
     },
     {
@@ -264,7 +264,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 28.32,
+      "latency_ms": 28.02,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 303) \u2014 *Subject: Aviation Meteo"
     },
     {
@@ -281,7 +281,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 13.25,
+      "latency_ms": 15.45,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Aviation Meteorology: IC Joshi 7th Edition** (Page 115) \u2014 *Subject: Indian M"
     },
     {
@@ -298,7 +298,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 30.19,
+      "latency_ms": 30.53,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Oxford Aviation Academy: Meteorology** (Page 187) \u2014 *Subject: Aviation Meteo"
     },
     {
@@ -315,7 +315,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 22.65,
+      "latency_ms": 24.5,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Aviation Meteorology: IC Joshi 7th Edition** (Page 182) \u2014 *Subject: Indian M"
     },
     {
@@ -332,7 +332,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 6.05,
+      "latency_ms": 7.11,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Aviation Meteorology: IC Joshi 7th Edition** (Page 240) \u2014 *Subject: Indian M"
     },
     {
@@ -349,7 +349,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 39.62,
+      "latency_ms": 39.13,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 42) \u2014 *Subject: Air Regulation"
     },
     {
@@ -366,7 +366,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 31.25,
+      "latency_ms": 32.33,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 42) \u2014 *Subject: Air Regulation"
     },
     {
@@ -384,7 +384,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 25.03,
+      "latency_ms": 24.73,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 125) \u2014 *Subject: Air Regulatio"
     },
     {
@@ -401,7 +401,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 17.9,
+      "latency_ms": 19.5,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 310) \u2014 *Subject: Air Regulatio"
     },
     {
@@ -418,7 +418,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 28.76,
+      "latency_ms": 31.73,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 260) \u2014 *Subject: Air Regulatio"
     },
     {
@@ -435,7 +435,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 25.74,
+      "latency_ms": 26.58,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 88) \u2014 *Subject: Air Regulation"
     },
     {
@@ -452,7 +452,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 31.13,
+      "latency_ms": 33.27,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 190) \u2014 *Subject: Air Regulatio"
     },
     {
@@ -469,7 +469,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 28.85,
+      "latency_ms": 31.83,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Regulations: RK Bali 15th Edition** (Page 190) \u2014 *Subject: Air Regulatio"
     },
     {
@@ -486,7 +486,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 21.31,
+      "latency_ms": 22.35,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 309) \u2014 *Subject: General Navigati"
     },
     {
@@ -503,7 +503,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 21.07,
+      "latency_ms": 21.54,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 251) \u2014 *Subject: General Navigati"
     },
     {
@@ -520,7 +520,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 24.23,
+      "latency_ms": 23.56,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Principles of Flight & Aerodynamics** (Page 41) \u2014 *Subjec"
     },
     {
@@ -536,7 +536,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 33.96,
+      "latency_ms": 34.75,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 210) \u2014 *Subject: General Navigati"
     },
     {
@@ -552,7 +552,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 29.98,
+      "latency_ms": 31.25,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: General Navigation** (Page 492) \u2014 *Subject: General Navigati"
     },
     {
@@ -569,7 +569,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 29.79,
+      "latency_ms": 31.8,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Flight Planning & Monitoring** (Page 265) \u2014 *Subject: Flight"
     },
     {
@@ -584,7 +584,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 33.47,
+      "latency_ms": 33.7,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 302) \u2014 *Subject: Radio Navi"
     },
     {
@@ -600,7 +600,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 23.3,
+      "latency_ms": 23.61,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 258) \u2014 *Subject: Radio Navi"
     },
     {
@@ -617,7 +617,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 18.61,
+      "latency_ms": 20.46,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 157) \u2014 *Subject: Radio Navi"
     },
     {
@@ -634,7 +634,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 26.04,
+      "latency_ms": 26.62,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 338) \u2014 *Subject: Radio Navi"
     },
     {
@@ -651,7 +651,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 12.16,
+      "latency_ms": 12.95,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 234) \u2014 *Subject: Radio Navi"
     },
     {
@@ -668,7 +668,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 13.99,
+      "latency_ms": 15.9,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Air Navigation: Radio Navigation & Radar** (Page 325) \u2014 *Subject: Radio Navi"
     },
     {
@@ -683,7 +683,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 28.81,
+      "latency_ms": 30.37,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Airframes, Hydraulics & Systems** (Page 189) \u2014 *Subject: "
     },
     {
@@ -700,7 +700,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 31.02,
+      "latency_ms": 30.26,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Airframes, Hydraulics & Systems** (Page 66) \u2014 *Subject: A"
     },
     {
@@ -717,7 +717,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 31.91,
+      "latency_ms": 32.12,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Powerplant & Jet Engines** (Page 122) \u2014 *Subject: Powerpl"
     },
     {
@@ -734,7 +734,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 30.63,
+      "latency_ms": 30.5,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Powerplant & Jet Engines** (Page 70) \u2014 *Subject: Powerpla"
     },
     {
@@ -750,7 +750,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 25.65,
+      "latency_ms": 52.51,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Powerplant & Jet Engines** (Page 213) \u2014 *Subject: Powerpl"
     },
     {
@@ -765,7 +765,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 27.39,
+      "latency_ms": 28.08,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Technical General: Aircraft Electrics & Electronics** (Page 61) \u2014 *Subject: "
     },
     {
@@ -780,7 +780,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 16.05,
+      "latency_ms": 16.01,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 120) \u2014 *Subject"
     },
     {
@@ -797,7 +797,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 46.14,
+      "latency_ms": 19.7,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 149) \u2014 *Subject"
     },
     {
@@ -814,7 +814,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 39.07,
+      "latency_ms": 37.68,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 71) \u2014 *Subject:"
     },
     {
@@ -831,7 +831,7 @@
       "passed": true,
       "is_hijacked_greeting": false,
       "has_citations": true,
-      "latency_ms": 22.12,
+      "latency_ms": 24.17,
       "answer_preview": "### \u2708\ufe0f **DGCA Textbook Doubt Resolution**  \ud83d\udcd6 **Referred Background Source Book:** **Radio Telephony: RTR(A) Communications & Phraseology** (Page 131) \u2014 *Subject"
     }
   ]

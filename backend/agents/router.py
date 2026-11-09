@@ -27,6 +27,14 @@ COMPLEX_PATTERNS = [
     re.compile(r'(foreign|faa|caa|sacaa|easa|conversion|convert)\b.*(license|cpl|dgca)', re.I)
 ]
 
+# Explicit non-aviation pattern regexes
+NON_AVIATION_PATTERNS = [
+    re.compile(r'\b(recipe|cook|cooking|baking|bake|ingredients|dish|dinner|lunch|breakfast|pizza|pasta|sourdough|cake|curry|biryani|paneer|burger)\b', re.I),
+    re.compile(r'\b(stocks?|nse|bse|nifty|sensex|crypto|bitcoin|ethereum|trading|share price|invest in stock|dividend|mutual funds?)\b', re.I),
+    re.compile(r'\b(python|javascript|typescript|c\+\+|java|react|angular|html|css|sql query code|write code|debug code|flask|django)\b', re.I),
+    re.compile(r'\b(cricket|football|fifa|ipl|world cup|movie|actor|actress|bollywood|hollywood|song|lyrics)\b', re.I)
+]
+
 # Aviation domain terminology guardrail
 AVIATION_TERMS = {
     # Licensing & Training
@@ -37,13 +45,15 @@ AVIATION_TERMS = {
     "exams", "syllabus", "cadet", "ground school", "fdtl", "logbook", "rule 67a", "rule 7",
     "computer number", "egca", "pariksha", "medical", "medicals", "class 1", "class 2",
     "lasik", "vision", "eyesight", "afcme", "iam", "pmr", "rtr", "license", "quiz", "option",
+    "type rating", "instrument rating", "night rating", "multi engine", "fto", "flight training",
     # Aerodynamics & Principles of Flight
     "aerodynamics", "lift", "drag", "thrust", "weight", "stall", "stalling", "angle of attack",
     "aoa", "camber", "cambered", "aerofoil", "airfoil", "chord", "span", "aspect ratio",
     "vortex", "vortices", "wingtip", "downwash", "induced drag", "parasite drag", "yaw",
-    "adverse yaw", "rudder", "aileron", "elevator", "dihedral", "roll", "pitch", "stability",
+    "adverse yaw", "rudder", "aileron", "elevator", "dihedral", "anhedral", "roll", "pitch", "stability",
     "center of pressure", "center of gravity", "ground effect", "mach", "transonic", "supersonic",
-    "shock", "shock stall", "buffet", "boundary layer", "flaps", "slats", "spoilers",
+    "shock", "shock stall", "buffet", "boundary layer", "flaps", "slats", "spoilers", "canard",
+    "stabilator", "tailplane", "fin", "trim tab", "balance tab", "servo tab", "stick pusher", "stick shaker",
     # Meteorology
     "weather", "met", "meteorology", "altimeter", "qnh", "qfe", "qne", "pressure", "atmosphere",
     "lapse", "lapse rate", "dalr", "salr", "elr", "temperature", "inversion", "coriolis",
@@ -52,25 +62,36 @@ AVIATION_TERMS = {
     "turbulence", "cat", "clear air turbulence", "mountain wave", "rotor", "lenticular",
     "icing", "supercooled", "rime", "rime ice", "clear ice", "monsoon", "trough", "tibetan",
     "easterly jet", "somali jet", "western disturbances", "norwester", "nor'wester", "kalbaisakhi",
-    "andhi", "metar", "taf", "speci", "cavok", "rvr",
+    "andhi", "metar", "taf", "speci", "cavok", "rvr", "albedo", "insolation", "dewpoint", "humidity",
+    "isobar", "isotherm", "isallobar", "katabatic", "anabatic", "front", "frontal", "cold front",
+    "warm front", "occlusion", "occluded", "frontogenesis", "squall", "virga", "mammatus", "stratus",
+    "cirrus", "itcz", "doldrums", "jet stream",
     # Air Regulations & ATC
     "airspace", "fir", "atc", "runway", "speed", "knot", "knots", "heading", "track",
     "right of way", "head on", "converging", "overtaking", "semi-circular", "cruising level",
     "vfr", "ifr", "imc", "vmc", "minima", "squawk", "transponder", "7500", "7600", "7700",
-    # Navigation & Instruments
+    "flight level", "transition altitude", "papi", "vasi", "tora", "toda", "asda", "lda",
+    # Navigation & Instruments (including Earth, Orbits & Time)
     "nav", "navigation", "vor", "dme", "radial", "ils", "localizer", "glide path", "glideslope",
     "ndb", "adf", "coastal refraction", "night effect", "radar", "psr", "ssr", "gps", "gnss",
     "raim", "satellite", "great circle", "rhumb line", "mercator", "lambert", "convergence",
     "conversion angle", "true airspeed", "tas", "indicated airspeed", "ias", "cas", "eas",
     "groundspeed", "1 in 60", "drift", "cross country", "solo", "pet", "critical point",
-    "point of safe return", "endurance", "fuel flow",
+    "point of safe return", "psr", "endurance", "fuel flow", "perihelion", "aphelion", "kepler",
+    "orbit", "orbital", "solstice", "equinox", "celestial", "ecliptic", "sidereal", "solar",
+    "declination", "hour angle", "zenith", "nadir", "oblate", "spheroid", "geoid", "meridian",
+    "parallel", "latitude", "longitude", "dlat", "dlong", "convergency", "departure", "scale",
+    "conformal", "isogonal", "agonic", "isogonic", "variation", "deviation", "compass", "dip",
+    "quadrantal", "quadrantal error", "time", "apparent solar time", "mean solar time", "equation of time",
+    "utc", "gmt", "lst", "lmt", "astronomical",
     # Airframes, Systems, Engines & RT
     "airframe", "hydraulics", "hydraulic", "accumulator", "nitrogen", "actuator", "fly by wire",
     "fbw", "powerplant", "engine", "engines", "piston", "carburetor", "carburettor", "carb heat",
     "magneto", "magnetos", "spark plug", "ignition", "propeller", "turbofan", "turbojet",
     "turboprop", "bypass ratio", "bypass", "thermal runaway", "battery", "nickel cadmium", "ni-cd",
     "mayday", "pan pan", "distress", "urgency", "readback", "clearance", "phraseology",
-    "cessna", "cessna 172", "multi-engine"
+    "cessna", "cessna 172", "supercharger", "turbocharger", "wastegate", "bleed air", "pressurization",
+    "outflow valve", "cabin altitude", "anti-skid", "oleo strut"
 }
 
 class IntentRouter:
@@ -134,6 +155,15 @@ class IntentRouter:
         if any(w in message.lower() for w in ["pilot", "jahaj", "plane", "udaan", "cpl", "fees", "flight", "option a", "option b", "option c"]):
             return True
         return False
+
+    def is_explicit_non_aviation(self, message: str) -> bool:
+        """Detects clear non-aviation domain requests (cooking, coding, stock market, sports, entertainment)"""
+        lower = message.lower()
+        tokens = set(re.findall(r'\b[a-z0-9\-]+\b', lower))
+        has_aviation_token = bool(tokens & AVIATION_TERMS) or any(w in lower for w in ["pilot", "plane", "flight", "dgca", "cpl", "aircraft", "ground school", "flying"])
+        if has_aviation_token:
+            return False
+        return any(pattern.search(lower) for pattern in NON_AVIATION_PATTERNS)
 
     def generate_escalation_data(self, query: str, reason: str) -> Dict[str, Any]:
         academy = self.kb.get("academy", {})
@@ -346,8 +376,8 @@ class IntentRouter:
             adm_result["agent_handled"] = "AdmissionsAdvisorAgent"
             return adm_result
 
-        # 9. Out-of-Domain Guardrail (Reject non-aviation questions: recipes, coding, stocks)
-        if not self.is_aviation_query(text) and not is_complex:
+        # 9. Explicit Out-of-Domain Guardrail (Reject recipes, coding, stocks, sports)
+        if self.is_explicit_non_aviation(text):
             return {
                 "answer": (
                     "### ✈️ **Airborne Aviation Academy Assistant**\n\n"
@@ -380,6 +410,34 @@ class IntentRouter:
             theory_result["escalation"] = default_escalation
             theory_result["agent_handled"] = "TheoryTutorAgent"
             return theory_result
+
+        # 11. Domain Verification for Unmatched Queries
+        if not self.is_aviation_query(text) and not is_complex:
+            return {
+                "answer": (
+                    "### ✈️ **Airborne Aviation Academy Assistant**\n\n"
+                    "I specialize strictly in **DGCA Pilot Training & Aviation Ground School** (Air Navigation, Aviation Meteorology, Air Regulations, Technical General, and RTR-A).\n\n"
+                    "I cannot assist with unrelated queries like general programming, cooking recipes, or stock market trading.\n\n"
+                    "Please feel free to ask any question regarding:\n"
+                    "- 🛫 **CPL & Airline Cadet Pilot Programs**\n"
+                    "- 📚 **DGCA Ground Exam Subjects & Theory Doubts**\n"
+                    "- 💰 **Flight Training Fees & Bank Loan Tie-ups**\n"
+                    "- 🩺 **Class 1 & Class 2 Medicals and Vision Rules**\n\n"
+                    "📖 **Referred Background Source:** Airborne Aviation Academy Ground School Curriculum"
+                ),
+                "chips": ["CPL Course Details", "DGCA 5 Subjects", "Total Course Cost", "Class 1 & 2 Medicals"],
+                "escalation": default_escalation,
+                "under_the_hood": {
+                    "matched": False,
+                    "confidence_score": 0.0,
+                    "retrieval_method": "Scope Guardrail (Out of Domain)",
+                    "primary_book": "Airborne Aviation Scope Guardrail",
+                    "page_number": None,
+                    "subject": "Out-of-Domain Protection",
+                    "chunk_excerpt": "Query rejected as outside aviation ground school and pilot training curriculum."
+                },
+                "agent_handled": "ScopeGuardrail"
+            }
 
         # 11. Fallback for unindexed general aviation queries
         default_escalation["needed"] = True
